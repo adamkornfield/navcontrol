@@ -11,10 +11,10 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet var productTableView: UITableView!
-    var deviceMakerSelected : Int = 0
+    var companySelected : Int = 0
     
     
-    let deviceMakers = ["Apple devices", "Samsung devices"]
+    let companies = ["Apple", "Samsung","Warby Parker","Sticker Mule"]
     let textCellIdentifier = "reuseCell"
     
     override func viewDidLoad() {
@@ -31,12 +31,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return deviceMakers.count
+        return companies.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath)
-        cell.textLabel?.text = deviceMakers[indexPath.row]
+        cell.textLabel?.text = companies[indexPath.row]
         return cell
         
     }
@@ -44,7 +44,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        deviceMakerSelected = indexPath.row
+        companySelected = indexPath.row
         performSegueWithIdentifier("productViewControllerSegue", sender: self)
        
     }
@@ -53,7 +53,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
         let destinationVC = segue.destinationViewController as! ProductViewController
-        destinationVC.deviceMakerSelected = deviceMakerSelected
+        destinationVC.companySelected = companySelected
         
     }
 

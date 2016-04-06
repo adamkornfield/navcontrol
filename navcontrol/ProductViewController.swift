@@ -11,7 +11,7 @@ import UIKit
 class ProductViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet var productTableView: UITableView!
-    var deviceMakerSelected : Int = 0
+    var companySelected : Int = 0
     var reusableCell = "productCell"
     
     let appleProducts = ["iPad","iPhone","MacBook Air","Apple Watch"]
@@ -30,7 +30,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if deviceMakerSelected == 0 {
+        if companySelected == 0 {
             self.title = "Apple Products"
             return appleProducts.count
             
@@ -44,7 +44,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = productTableView.dequeueReusableCellWithIdentifier(reusableCell, forIndexPath: indexPath)
         
-        if deviceMakerSelected == 0 {
+        if companySelected == 0 {
             cell.textLabel?.text = appleProducts[indexPath.row]
         }
         else {
