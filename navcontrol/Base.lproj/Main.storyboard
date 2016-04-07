@@ -102,11 +102,51 @@
                     </view>
                     <connections>
                         <outlet property="productTableView" destination="2hj-kl-oBj" id="w6h-VQ-PEr"/>
+                        <segue destination="ifo-3g-Kve" kind="show" identifier="webViewSegue" id="tuh-SL-5Gu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OeJ-zf-A6D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1396" y="357"/>
+            <point key="canvasLocation" x="1340" y="354"/>
+        </scene>
+        <!--Web View Controller-->
+        <scene sceneID="iKf-1A-0QS">
+            <objects>
+                <viewController id="ifo-3g-Kve" userLabel="Web View Controller" customClass="WebViewController" customModule="navcontrol" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="M5M-ws-H1X"/>
+                        <viewControllerLayoutGuide type="bottom" id="IZO-HD-xU9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sgt-g5-nNd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Bd-3g-EvC">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="8Bd-3g-EvC" secondAttribute="trailing" id="1Ng-qG-NF5"/>
+                            <constraint firstItem="IZO-HD-xU9" firstAttribute="top" secondItem="8Bd-3g-EvC" secondAttribute="bottom" id="Kmz-JU-jAD"/>
+                            <constraint firstItem="8Bd-3g-EvC" firstAttribute="top" secondItem="M5M-ws-H1X" secondAttribute="bottom" id="Mvp-jH-aao"/>
+                            <constraint firstItem="8Bd-3g-EvC" firstAttribute="top" secondItem="sgt-g5-nNd" secondAttribute="top" id="Rdc-Ub-WH7"/>
+                            <constraint firstItem="8Bd-3g-EvC" firstAttribute="leading" secondItem="sgt-g5-nNd" secondAttribute="leading" id="m2z-jk-m5T"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Mvp-jH-aao"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="webViewer" destination="8Bd-3g-EvC" id="0xF-3B-Tl0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ozc-u5-FWA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2100" y="354"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NX6-5P-rfg">
