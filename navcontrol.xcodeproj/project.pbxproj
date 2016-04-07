@@ -13,6 +13,23 @@
 		57F2E2131CB56CE800B344B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2121CB56CE800B344B0 /* Assets.xcassets */; };
 		57F2E2161CB56CE800B344B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2141CB56CE800B344B0 /* LaunchScreen.storyboard */; };
 		57F2E2221CB5ADCC00B344B0 /* ProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2E2211CB5ADCC00B344B0 /* ProductViewController.swift */; };
+		57F2E22A1CB6E43900B344B0 /* warbyparker.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2261CB6E43900B344B0 /* warbyparker.png */; };
+		57F2E22B1CB6E43900B344B0 /* stickermule.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2271CB6E43900B344B0 /* stickermule.png */; };
+		57F2E22D1CB6E48F00B344B0 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E22C1CB6E48F00B344B0 /* apple.png */; };
+		57F2E22F1CB6E52C00B344B0 /* samsung.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E22E1CB6E52C00B344B0 /* samsung.png */; };
+		57F2E2351CB6E7FB00B344B0 /* macbookair.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2311CB6E7FB00B344B0 /* macbookair.png */; };
+		57F2E2361CB6E7FB00B344B0 /* iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2321CB6E7FB00B344B0 /* iphone.png */; };
+		57F2E2371CB6E7FB00B344B0 /* ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2331CB6E7FB00B344B0 /* ipad.png */; };
+		57F2E2381CB6E7FB00B344B0 /* applewatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2341CB6E7FB00B344B0 /* applewatch.png */; };
+		57F2E2441CB6E99B00B344B0 /* henry.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2411CB6E99B00B344B0 /* henry.png */; };
+		57F2E2451CB6E99B00B344B0 /* crane.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2421CB6E99B00B344B0 /* crane.png */; };
+		57F2E2461CB6E99B00B344B0 /* eaton.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2431CB6E99B00B344B0 /* eaton.png */; };
+		57F2E24A1CB6E9E700B344B0 /* galaxy.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2471CB6E9E700B344B0 /* galaxy.png */; };
+		57F2E24B1CB6E9E700B344B0 /* galaxynote.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2481CB6E9E700B344B0 /* galaxynote.png */; };
+		57F2E24C1CB6E9E700B344B0 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2491CB6E9E700B344B0 /* gear.png */; };
+		57F2E2511CB6EA5400B344B0 /* diecut.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E24E1CB6EA5400B344B0 /* diecut.png */; };
+		57F2E2521CB6EA5400B344B0 /* rectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E24F1CB6EA5400B344B0 /* rectangle.png */; };
+		57F2E2531CB6EA5400B344B0 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E2501CB6EA5400B344B0 /* circle.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +41,23 @@
 		57F2E2151CB56CE800B344B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		57F2E2171CB56CE800B344B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57F2E2211CB5ADCC00B344B0 /* ProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductViewController.swift; sourceTree = "<group>"; };
+		57F2E2261CB6E43900B344B0 /* warbyparker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warbyparker.png; sourceTree = "<group>"; };
+		57F2E2271CB6E43900B344B0 /* stickermule.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stickermule.png; sourceTree = "<group>"; };
+		57F2E22C1CB6E48F00B344B0 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
+		57F2E22E1CB6E52C00B344B0 /* samsung.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = samsung.png; sourceTree = "<group>"; };
+		57F2E2311CB6E7FB00B344B0 /* macbookair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = macbookair.png; sourceTree = "<group>"; };
+		57F2E2321CB6E7FB00B344B0 /* iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone.png; sourceTree = "<group>"; };
+		57F2E2331CB6E7FB00B344B0 /* ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ipad.png; sourceTree = "<group>"; };
+		57F2E2341CB6E7FB00B344B0 /* applewatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = applewatch.png; sourceTree = "<group>"; };
+		57F2E2411CB6E99B00B344B0 /* henry.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = henry.png; sourceTree = "<group>"; };
+		57F2E2421CB6E99B00B344B0 /* crane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crane.png; sourceTree = "<group>"; };
+		57F2E2431CB6E99B00B344B0 /* eaton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = eaton.png; sourceTree = "<group>"; };
+		57F2E2471CB6E9E700B344B0 /* galaxy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = galaxy.png; sourceTree = "<group>"; };
+		57F2E2481CB6E9E700B344B0 /* galaxynote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = galaxynote.png; sourceTree = "<group>"; };
+		57F2E2491CB6E9E700B344B0 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
+		57F2E24E1CB6EA5400B344B0 /* diecut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diecut.png; sourceTree = "<group>"; };
+		57F2E24F1CB6EA5400B344B0 /* rectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rectangle.png; sourceTree = "<group>"; };
+		57F2E2501CB6EA5400B344B0 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +74,7 @@
 		57F2E1FF1CB56CE800B344B0 = {
 			isa = PBXGroup;
 			children = (
+				57F2E2231CB6E42A00B344B0 /* Images */,
 				57F2E20A1CB56CE800B344B0 /* navcontrol */,
 				57F2E2091CB56CE800B344B0 /* Products */,
 			);
@@ -65,6 +100,62 @@
 				57F2E2171CB56CE800B344B0 /* Info.plist */,
 			);
 			path = navcontrol;
+			sourceTree = "<group>";
+		};
+		57F2E2231CB6E42A00B344B0 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				57F2E24D1CB6EA4800B344B0 /* Sticker Mule Products */,
+				57F2E2301CB6E7F000B344B0 /* Apple Products */,
+				57F2E2391CB6E8E500B344B0 /* Samsung Products */,
+				57F2E2401CB6E99100B344B0 /* Warby Parker Products */,
+				57F2E2261CB6E43900B344B0 /* warbyparker.png */,
+				57F2E22E1CB6E52C00B344B0 /* samsung.png */,
+				57F2E22C1CB6E48F00B344B0 /* apple.png */,
+				57F2E2271CB6E43900B344B0 /* stickermule.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		57F2E2301CB6E7F000B344B0 /* Apple Products */ = {
+			isa = PBXGroup;
+			children = (
+				57F2E2311CB6E7FB00B344B0 /* macbookair.png */,
+				57F2E2321CB6E7FB00B344B0 /* iphone.png */,
+				57F2E2331CB6E7FB00B344B0 /* ipad.png */,
+				57F2E2341CB6E7FB00B344B0 /* applewatch.png */,
+			);
+			name = "Apple Products";
+			sourceTree = "<group>";
+		};
+		57F2E2391CB6E8E500B344B0 /* Samsung Products */ = {
+			isa = PBXGroup;
+			children = (
+				57F2E2471CB6E9E700B344B0 /* galaxy.png */,
+				57F2E2481CB6E9E700B344B0 /* galaxynote.png */,
+				57F2E2491CB6E9E700B344B0 /* gear.png */,
+			);
+			name = "Samsung Products";
+			sourceTree = "<group>";
+		};
+		57F2E2401CB6E99100B344B0 /* Warby Parker Products */ = {
+			isa = PBXGroup;
+			children = (
+				57F2E2411CB6E99B00B344B0 /* henry.png */,
+				57F2E2421CB6E99B00B344B0 /* crane.png */,
+				57F2E2431CB6E99B00B344B0 /* eaton.png */,
+			);
+			name = "Warby Parker Products";
+			sourceTree = "<group>";
+		};
+		57F2E24D1CB6EA4800B344B0 /* Sticker Mule Products */ = {
+			isa = PBXGroup;
+			children = (
+				57F2E24E1CB6EA5400B344B0 /* diecut.png */,
+				57F2E24F1CB6EA5400B344B0 /* rectangle.png */,
+				57F2E2501CB6EA5400B344B0 /* circle.png */,
+			);
+			name = "Sticker Mule Products";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,9 +216,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57F2E2381CB6E7FB00B344B0 /* applewatch.png in Resources */,
 				57F2E2161CB56CE800B344B0 /* LaunchScreen.storyboard in Resources */,
+				57F2E2371CB6E7FB00B344B0 /* ipad.png in Resources */,
+				57F2E2361CB6E7FB00B344B0 /* iphone.png in Resources */,
+				57F2E24C1CB6E9E700B344B0 /* gear.png in Resources */,
+				57F2E2451CB6E99B00B344B0 /* crane.png in Resources */,
+				57F2E2351CB6E7FB00B344B0 /* macbookair.png in Resources */,
+				57F2E2531CB6EA5400B344B0 /* circle.png in Resources */,
+				57F2E22A1CB6E43900B344B0 /* warbyparker.png in Resources */,
+				57F2E2441CB6E99B00B344B0 /* henry.png in Resources */,
+				57F2E22F1CB6E52C00B344B0 /* samsung.png in Resources */,
+				57F2E22D1CB6E48F00B344B0 /* apple.png in Resources */,
+				57F2E22B1CB6E43900B344B0 /* stickermule.png in Resources */,
 				57F2E2131CB56CE800B344B0 /* Assets.xcassets in Resources */,
+				57F2E2461CB6E99B00B344B0 /* eaton.png in Resources */,
+				57F2E24B1CB6E9E700B344B0 /* galaxynote.png in Resources */,
+				57F2E2521CB6EA5400B344B0 /* rectangle.png in Resources */,
+				57F2E24A1CB6E9E700B344B0 /* galaxy.png in Resources */,
 				57F2E2111CB56CE800B344B0 /* Main.storyboard in Resources */,
+				57F2E2511CB6EA5400B344B0 /* diecut.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

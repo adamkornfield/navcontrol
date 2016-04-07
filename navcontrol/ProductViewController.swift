@@ -16,8 +16,8 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     var reusableCell = "productCell"
     
     let appleProducts = ["iPad","iPhone","MacBook Air","Apple Watch"]
-    let samsungProducts = ["Galaxy", "Galaxy Tab","Galaxy Note"]
-    let warbyParkerProducts = ["Henry","Crane","Haskell"]
+    let samsungProducts = ["Galaxy", "Galaxy Note","Gear"]
+    let warbyParkerProducts = ["Henry","Crane","Eaton"]
     let stickerMuleProducts = ["Die Cut","Rectangle","Circle"]
     
     override func viewDidLoad() {
@@ -55,9 +55,13 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         
         switch companySelected {
             case 0: cell.textLabel?.text = appleProducts[indexPath.row]
+                    cell.imageView?.image = UIImage(named: appleProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
             case 1: cell.textLabel?.text = samsungProducts[indexPath.row]
+                cell.imageView?.image = UIImage(named: samsungProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
             case 2: cell.textLabel?.text = warbyParkerProducts[indexPath.row]
+                cell.imageView?.image = UIImage(named: warbyParkerProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
             case 3: cell.textLabel?.text = stickerMuleProducts[indexPath.row]
+                cell.imageView?.image = UIImage(named: stickerMuleProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
             default: break
         }
         
