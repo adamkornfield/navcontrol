@@ -12,7 +12,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     @IBOutlet var productTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
-    var companySelected : Int = 0
+    var companySelected  = ""
     var inEditing = 0
     
     var reusableCell = "productCell"
@@ -36,13 +36,8 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         productTableView.dataSource = self
         productTableView.delegate = self
         
-        switch companySelected {
-            case 0: self.title = "Apple"
-            case 1: self.title = "Samsung"
-            case 2: self.title = "Warby Parker"
-            case 3: self.title = "Sticker Mule"
-            default: self.title = "Products"
-        }
+        self.title = companySelected
+        
 
         
     }
@@ -61,16 +56,35 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
+    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        switch companySelected {
+        case "Apple":   let itemToMove = appleProducts[sourceIndexPath.row]
+                        appleProducts.removeAtIndex(sourceIndexPath.row)
+                        appleProducts.insert(itemToMove, atIndex: destinationIndexPath.row)
+        case "Samsung": let itemToMove = samsungProducts[sourceIndexPath.row]
+                        samsungProducts.removeAtIndex(sourceIndexPath.row)
+                        samsungProducts.insert(itemToMove, atIndex: destinationIndexPath.row)
+        case "Warby Parker":    let itemToMove = warbyParkerProducts[sourceIndexPath.row]
+                                warbyParkerProducts.removeAtIndex(sourceIndexPath.row)
+                                warbyParkerProducts.insert(itemToMove, atIndex: destinationIndexPath.row)
+        case "Sticker Mule":    let itemToMove = stickerMuleProducts[sourceIndexPath.row]
+                                stickerMuleProducts.removeAtIndex(sourceIndexPath.row)
+                                stickerMuleProducts.insert(itemToMove, atIndex: destinationIndexPath.row)
+        default: self.title = "Products"
+        }
+
+    }
+    
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.Delete
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         switch companySelected {
-        case 0: appleProducts.removeAtIndex(indexPath.row)
-        case 1: samsungProducts.removeAtIndex(indexPath.row)
-        case 2: warbyParkerProducts.removeAtIndex(indexPath.row)
-        case 3: stickerMuleProducts.removeAtIndex(indexPath.row)
+        case "Apple": appleProducts.removeAtIndex(indexPath.row)
+        case "Samsung": samsungProducts.removeAtIndex(indexPath.row)
+        case "Warby Parker": warbyParkerProducts.removeAtIndex(indexPath.row)
+        case "Sticker Mule": stickerMuleProducts.removeAtIndex(indexPath.row)
         default: self.title = "Products"
         }
 
@@ -83,10 +97,10 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch companySelected {
-            case 0: return appleProducts.count
-            case 1: return samsungProducts.count
-            case 2: return warbyParkerProducts.count
-            case 3: return stickerMuleProducts.count
+            case "Apple": return appleProducts.count
+            case "Samsung": return samsungProducts.count
+            case "Warby Parker": return warbyParkerProducts.count
+            case "Sticker Mule": return stickerMuleProducts.count
             default: return 0
         }
 
@@ -96,20 +110,33 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         let cell = productTableView.dequeueReusableCellWithIdentifier(reusableCell, forIndexPath: indexPath)
         
         switch companySelected {
-            case 0: cell.textLabel?.text = appleProducts[indexPath.row]
-                    cell.imageView?.image = UIImage(named: appleProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
-            case 1: cell.textLabel?.text = samsungProducts[indexPath.row]
-                cell.imageView?.image = UIImage(named: samsungProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
-            case 2: cell.textLabel?.text = warbyParkerProducts[indexPath.row]
-                cell.imageView?.image = UIImage(named: warbyParkerProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
-            case 3: cell.textLabel?.text = stickerMuleProducts[indexPath.row]
-                cell.imageView?.image = UIImage(named: stickerMuleProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
+            case "Apple": cell.textLabel?.text = appleProducts[indexPath.row]
+                    cell.imageView?.image = resizeImage(UIImage(named: appleProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")!, newWidth: 37.0)
+            case "Samsung": cell.textLabel?.text = samsungProducts[indexPath.row]
+                cell.imageView?.image = resizeImage(UIImage(named: samsungProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")!, newWidth: 31.0)
+            case "Warby Parker": cell.textLabel?.text = warbyParkerProducts[indexPath.row]
+                cell.imageView?.image = resizeImage(UIImage(named: warbyParkerProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")!, newWidth: 100.0)
+            case "Sticker Mule": cell.textLabel?.text = stickerMuleProducts[indexPath.row]
+                cell.imageView?.image = resizeImage(UIImage(named: stickerMuleProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")!, newWidth: 40.0)
             default: break
         }
-        
-        
+
+        cell.showsReorderControl = true
         
         return cell
+    }
+    
+    
+    func resizeImage(image:UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let newScale = newWidth/image.size.width
+        let newHeight = newScale * image.size.height
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: newWidth, height: newHeight), false, 0.0)
+        image.drawInRect(CGRect(x: 0.0, y: 0.0, width: newWidth, height: newHeight))
+        let theNewImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return theNewImage
     }
     
     
@@ -119,10 +146,10 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
 
         
         switch companySelected {
-            case 0: urlToSend = appleProductLinks[appleProducts[indexPath.row]]!
-            case 1: urlToSend = samsungProductLinks[samsungProducts[indexPath.row]]!
-            case 2: urlToSend = warbyParkerProductLinks[warbyParkerProducts[indexPath.row]]!
-            case 3: urlToSend = stickerMuleProductLinks[stickerMuleProducts[indexPath.row]]!
+            case "Apple": urlToSend = appleProductLinks[appleProducts[indexPath.row]]!
+            case "Samsung": urlToSend = samsungProductLinks[samsungProducts[indexPath.row]]!
+            case "Warby Parker": urlToSend = warbyParkerProductLinks[warbyParkerProducts[indexPath.row]]!
+            case "Sticker Mule": urlToSend = stickerMuleProductLinks[stickerMuleProducts[indexPath.row]]!
             default: urlToSend = "http://google.com"
         }
 

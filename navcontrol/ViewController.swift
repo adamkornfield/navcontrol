@@ -12,7 +12,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet var productTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
-    var companySelected : Int = 0
+    var companySelected  = ""
     var inEdit = 0
     
     
@@ -41,6 +41,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
+    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        
+        let itemToMove = companies[sourceIndexPath.row]
+        companies.removeAtIndex(sourceIndexPath.row)
+        companies.insert(itemToMove, atIndex: destinationIndexPath.row)
+
+    }
+    
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
             companies.removeAtIndex(indexPath.row)
@@ -63,16 +71,34 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath)
         cell.textLabel?.text = companies[indexPath.row]
-        cell.imageView?.image = UIImage(named: companies[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
+        cell.imageView?.image = resizeImage(UIImage(named: companies[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")!, newWidth: 100.0)
+        cell.showsReorderControl = true
+        
         
         return cell
         
+        
     }
+    
+    
+    func resizeImage(image:UIImage, newWidth: CGFloat) -> UIImage {
+    
+        let newScale = newWidth/image.size.width
+        let newHeight = newScale * image.size.height
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: newWidth, height: newHeight), false, 0.0)
+        image.drawInRect(CGRect(x: 0.0, y: 0.0, width: newWidth, height: newHeight))
+        let theNewImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return theNewImage
+    }
+    
+
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        companySelected = indexPath.row
+        companySelected = companies[indexPath.row]
         performSegueWithIdentifier("productViewControllerSegue", sender: self)
        
     }
