@@ -38,6 +38,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath)
         cell.textLabel?.text = companies[indexPath.row]
         cell.imageView?.image = UIImage(named: companies[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
+        
         return cell
         
     }
