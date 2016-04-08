@@ -11,16 +11,18 @@ import UIKit
 class ProductViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet var productTableView: UITableView!
+    @IBOutlet var editButton: UIBarButtonItem!
     var companySelected : Int = 0
+    var inEditing = 0
     
     var reusableCell = "productCell"
     
     
     
-    let appleProducts  = ["iPad", "iPhone", "MacBook Air","Apple Watch"]
-    let samsungProducts = ["Galaxy", "Galaxy Note","Gear"]
-    let warbyParkerProducts = ["Henry","Crane","Eaton"]
-    let stickerMuleProducts = ["Die Cut","Rectangle","Circle"]
+    var appleProducts  = ["iPad", "iPhone", "MacBook Air","Apple Watch"]
+    var samsungProducts = ["Galaxy", "Galaxy Note","Gear"]
+    var warbyParkerProducts = ["Henry","Crane","Eaton"]
+    var stickerMuleProducts = ["Die Cut","Rectangle","Circle"]
     
     
     let appleProductLinks : [String:String] = ["iPad" : "http://www.apple.com/ipad/","iPhone" : "http://www.apple.com/iphone/","MacBook Air" : "http://www.apple.com/macbook-air/","Apple Watch" : "http://www.apple.com/watch/"]
@@ -43,6 +45,36 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         }
 
         
+    }
+    @IBAction func editButtonPressed(sender: AnyObject) {
+        
+        if inEditing == 0 {
+            productTableView.setEditing(true, animated: true)
+            self.navigationItem.rightBarButtonItem?.title = "Done"
+            inEditing = 1
+        }
+        else {
+            productTableView.setEditing(false, animated: true)
+            self.navigationItem.rightBarButtonItem?.title = "Edit"
+            inEditing = 0
+
+        }
+    }
+    
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.Delete
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        switch companySelected {
+        case 0: appleProducts.removeAtIndex(indexPath.row)
+        case 1: samsungProducts.removeAtIndex(indexPath.row)
+        case 2: warbyParkerProducts.removeAtIndex(indexPath.row)
+        case 3: stickerMuleProducts.removeAtIndex(indexPath.row)
+        default: self.title = "Products"
+        }
+
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -74,6 +106,8 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
                 cell.imageView?.image = UIImage(named: stickerMuleProducts[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")
             default: break
         }
+        
+        
         
         return cell
     }

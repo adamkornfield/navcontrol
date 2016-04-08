@@ -50,8 +50,15 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Tpb-v8-P17" secondAttribute="trailing" id="gFV-3H-kzk"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Companies" id="HdB-qs-shG"/>
+                    <navigationItem key="navigationItem" title="Companies" id="HdB-qs-shG">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="D5x-aH-x3G">
+                            <connections>
+                                <action selector="editButtonPressed:" destination="BYZ-38-t0r" id="K31-sh-sH9"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="editButton" destination="D5x-aH-x3G" id="S5B-8R-AwO"/>
                         <outlet property="productTableView" destination="Tpb-v8-P17" id="A6u-nk-B1J"/>
                         <segue destination="CVm-ri-jVJ" kind="show" identifier="productViewControllerSegue" id="0Am-Zc-UIm"/>
                     </connections>
@@ -100,7 +107,15 @@
                             <constraint firstItem="2hj-kl-oBj" firstAttribute="top" secondItem="KKh-TH-b22" secondAttribute="bottom" constant="8" id="xc4-Zk-H87"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="yVz-j9-SPY">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="Mtc-dK-WVT">
+                            <connections>
+                                <action selector="editButtonPressed:" destination="CVm-ri-jVJ" id="fz2-Tb-uvn"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="editButton" destination="Mtc-dK-WVT" id="T8K-nS-B3G"/>
                         <outlet property="productTableView" destination="2hj-kl-oBj" id="w6h-VQ-PEr"/>
                         <segue destination="ifo-3g-Kve" kind="show" identifier="webViewSegue" id="tuh-SL-5Gu"/>
                     </connections>

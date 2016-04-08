@@ -11,10 +11,12 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet var productTableView: UITableView!
+    @IBOutlet var editButton: UIBarButtonItem!
     var companySelected : Int = 0
+    var inEdit = 0
     
     
-    let companies = ["Apple", "Samsung","Warby Parker","Sticker Mule"]
+    var companies = ["Apple", "Samsung","Warby Parker","Sticker Mule"]
     let textCellIdentifier = "reuseCell"
     
     override func viewDidLoad() {
@@ -25,6 +27,30 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
        
     }
     
+    
+    @IBAction func editButtonPressed(sender: AnyObject) {
+        if inEdit == 0 {
+            productTableView.setEditing(true, animated: true)
+            editButton.title = "Done"
+            inEdit = 1
+        }
+        else {
+            productTableView.setEditing(false, animated: true)
+            editButton.title = "Edit"
+            inEdit = 0
+        }
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            companies.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
+    }
+    
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.Delete
+    }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
