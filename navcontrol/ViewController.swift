@@ -10,32 +10,49 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    @IBOutlet var productTableView: UITableView!
+    @IBOutlet var companyTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
     var companySelected  = ""
     var inEdit = 0
-    
-    
     var companies = ["Apple", "Samsung","Warby Parker","Sticker Mule"]
+    
+    var appleProducts:[String] =  ["iPad", "iPhone", "MacBook Air","Apple Watch"]
+    var samsungProducts:[String] = ["Galaxy", "Galaxy Note","Gear"]
+    var warbyParkerProducts:[String] = ["Henry","Crane","Eaton"]
+    var stickerMuleProducts:[String] = ["Die Cut","Rectangle","Circle"]
+    
+    var appleProds : CompanyProducts?
+    var samsungProds : CompanyProducts?
+    var warbyParkerProds : CompanyProducts?
+    var stickerMuleProds : CompanyProducts?
+    
+    
     let textCellIdentifier = "reuseCell"
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        productTableView.dataSource = self
-        productTableView.delegate = self
-        //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back Cos", style: .Plain , target: nil, action: nil)
-       
+        companyTableView.dataSource = self
+        companyTableView.delegate = self
+        
+        appleProds = CompanyProducts(inProducts: appleProducts)
+        samsungProds = CompanyProducts(inProducts: samsungProducts)
+        warbyParkerProds = CompanyProducts(inProducts: warbyParkerProducts)
+        stickerMuleProds = CompanyProducts(inProducts: stickerMuleProducts)
+        
+        
     }
     
     
     @IBAction func editButtonPressed(sender: AnyObject) {
         if inEdit == 0 {
-            productTableView.setEditing(true, animated: true)
+            companyTableView.setEditing(true, animated: true)
             editButton.title = "Done"
             inEdit = 1
         }
         else {
-            productTableView.setEditing(false, animated: true)
+            companyTableView.setEditing(false, animated: true)
             editButton.title = "Edit"
             inEdit = 0
         }
@@ -73,11 +90,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.textLabel?.text = companies[indexPath.row]
         cell.imageView?.image = resizeImage(UIImage(named: companies[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")!, newWidth: 100.0)
         cell.showsReorderControl = true
-        
-        
+
         return cell
-        
-        
     }
     
     
@@ -96,20 +110,28 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         companySelected = companies[indexPath.row]
-        performSegueWithIdentifier("productViewControllerSegue", sender: self)
-       
+        performSegueWithIdentifier("productViewControllerSegue", sender:indexPath)
     }
+    
 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
-        let destinationVC = segue.destinationViewController as! ProductViewController
-        destinationVC.companySelected = companySelected
-        
+        let destViewController = segue.destinationViewController as! ProductViewController
+        destViewController.companySelected = companySelected
+        switch companySelected {
+        case "Apple": destViewController.companyProducts = appleProds
+            case "Samsung": destViewController.companyProducts = samsungProds
+            case "Warby Parker": destViewController.companyProducts = warbyParkerProds
+            case "Sticker Mule": destViewController.companyProducts = stickerMuleProds
+            default: self.title = "Products"
+        }
+
     }
+    
+
 
 
 }

@@ -33,7 +33,7 @@
                                                     <rect key="frame" x="15" y="0.0" width="530" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -58,9 +58,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="companyTableView" destination="Tpb-v8-P17" id="M6p-mM-ohd"/>
                         <outlet property="editButton" destination="D5x-aH-x3G" id="S5B-8R-AwO"/>
-                        <outlet property="productTableView" destination="Tpb-v8-P17" id="A6u-nk-B1J"/>
-                        <segue destination="CVm-ri-jVJ" kind="show" identifier="productViewControllerSegue" id="0Am-Zc-UIm"/>
+                        <segue destination="CVm-ri-jVJ" kind="show" identifier="productViewControllerSegue" id="JWQ-DN-rMS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -117,12 +117,12 @@
                     <connections>
                         <outlet property="editButton" destination="Mtc-dK-WVT" id="T8K-nS-B3G"/>
                         <outlet property="productTableView" destination="2hj-kl-oBj" id="w6h-VQ-PEr"/>
-                        <segue destination="ifo-3g-Kve" kind="show" identifier="webViewSegue" id="tuh-SL-5Gu"/>
+                        <segue destination="ifo-3g-Kve" kind="show" identifier="webViewSegue" id="0P8-KE-6sE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OeJ-zf-A6D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1340" y="354"/>
+            <point key="canvasLocation" x="1380" y="362"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="iKf-1A-0QS">

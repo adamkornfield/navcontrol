@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57A4E76A1CBC2FE600220204 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7691CBC2FE600220204 /* apple.png */; };
+		57A4E76C1CBC308A00220204 /* Products.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76B1CBC308A00220204 /* Products.swift */; };
 		57AFF7561CB8149A00A48158 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57AFF7551CB8149A00A48158 /* Default-568h@2x.png */; };
-		57AFF7581CB81E5300A48158 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 57AFF7571CB81E5300A48158 /* apple.png */; };
 		57F2E20C1CB56CE800B344B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */; };
 		57F2E20E1CB56CE800B344B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2E20D1CB56CE800B344B0 /* ViewController.swift */; };
 		57F2E2111CB56CE800B344B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57F2E20F1CB56CE800B344B0 /* Main.storyboard */; };
@@ -35,8 +36,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		57A4E7691CBC2FE600220204 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
+		57A4E76B1CBC308A00220204 /* Products.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Products.swift; sourceTree = "<group>"; };
 		57AFF7551CB8149A00A48158 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		57AFF7571CB81E5300A48158 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = apple.png; path = "../../../Images/Company Logos/apple.png"; sourceTree = "<group>"; };
 		57F2E2081CB56CE800B344B0 /* navcontrol.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = navcontrol.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57F2E20D1CB56CE800B344B0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */,
 				57F2E20D1CB56CE800B344B0 /* ViewController.swift */,
 				57F2E2211CB5ADCC00B344B0 /* ProductViewController.swift */,
+				57A4E76B1CBC308A00220204 /* Products.swift */,
 				57F2E20F1CB56CE800B344B0 /* Main.storyboard */,
 				57F2E2541CB6F1E300B344B0 /* WebViewController.swift */,
 				57F2E2121CB56CE800B344B0 /* Assets.xcassets */,
@@ -117,7 +120,6 @@
 				57F2E2401CB6E99100B344B0 /* Warby Parker Products */,
 				57F2E2261CB6E43900B344B0 /* warbyparker.png */,
 				57F2E22E1CB6E52C00B344B0 /* samsung.png */,
-				57AFF7571CB81E5300A48158 /* apple.png */,
 				57F2E2271CB6E43900B344B0 /* stickermule.png */,
 			);
 			name = Images;
@@ -147,6 +149,7 @@
 		57F2E2401CB6E99100B344B0 /* Warby Parker Products */ = {
 			isa = PBXGroup;
 			children = (
+				57A4E7691CBC2FE600220204 /* apple.png */,
 				57F2E2411CB6E99B00B344B0 /* henry.png */,
 				57F2E2421CB6E99B00B344B0 /* crane.png */,
 				57F2E2431CB6E99B00B344B0 /* eaton.png */,
@@ -232,7 +235,7 @@
 				57F2E2351CB6E7FB00B344B0 /* macbookair.png in Resources */,
 				57F2E2531CB6EA5400B344B0 /* circle.png in Resources */,
 				57F2E22A1CB6E43900B344B0 /* warbyparker.png in Resources */,
-				57AFF7581CB81E5300A48158 /* apple.png in Resources */,
+				57A4E76A1CBC2FE600220204 /* apple.png in Resources */,
 				57F2E2441CB6E99B00B344B0 /* henry.png in Resources */,
 				57F2E22F1CB6E52C00B344B0 /* samsung.png in Resources */,
 				57F2E22B1CB6E43900B344B0 /* stickermule.png in Resources */,
@@ -255,6 +258,7 @@
 			files = (
 				57F2E20E1CB56CE800B344B0 /* ViewController.swift in Sources */,
 				57F2E20C1CB56CE800B344B0 /* AppDelegate.swift in Sources */,
+				57A4E76C1CBC308A00220204 /* Products.swift in Sources */,
 				57F2E2221CB5ADCC00B344B0 /* ProductViewController.swift in Sources */,
 				57F2E2551CB6F1E300B344B0 /* WebViewController.swift in Sources */,
 			);
@@ -352,6 +356,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -380,6 +385,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = navcontrol/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ak.navcontrol;
