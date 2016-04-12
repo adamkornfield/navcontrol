@@ -14,39 +14,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet var editButton: UIBarButtonItem!
 
     var inEdit = 0
-    
-    let iPad  = Product(inName: "iPad", inURL: "http://www.apple.com/ipad/", inImage: "ipad.png")
-    let iPhone = Product(inName: "iPhone", inURL: "http://www.apple.com/iphone/", inImage: "iphone.png")
-    let macBookAir = Product(inName: "MacBook Air", inURL: "http://www.apple.com/macbook-air/", inImage: "macbookair.png")
-    let appleWatch = Product(inName: "Apple Watch", inURL: "http://www.apple.com/watch/", inImage: "applewatch.png")
-    
-    let galaxy = Product(inName: "Galaxy", inURL: "https://www.samsung.com/us/mobile/cell-phones/SM-G935AZDAATT", inImage: "galaxy.png")
-    let galaxyNote = Product(inName: "Galaxy Note", inURL: "http://www.samsung.com/us/mobile/cell-phones/SM-N920AZKAATT", inImage: "galaxynote.png")
-    let gear = Product(inName: "Gear", inURL: "http://www.samsung.com/us/mobile/wearable-tech/SM-R7200ZWAXAR", inImage: "gear.png")
-    
-    let henry = Product(inName: "Henry", inURL: "https://www.warbyparker.com/eyeglasses/men/henry/port-blue", inImage: "henry.png")
-    let crane = Product(inName: "Crane", inURL: "https://www.warbyparker.com/eyeglasses/men/crane/atlantic-blue", inImage: "crane.png")
-    let eaton = Product(inName: "Eaton", inURL: "https://www.warbyparker.com/eyeglasses/men/eaton/tree-swallow-fade", inImage: "eaton.png")
-    
-    let dieCut = Product(inName: "Die Cut", inURL: "https://www.stickermule.com/products/die-cut-stickers", inImage: "diecut.png")
-    let rectangle = Product(inName: "Rectangle", inURL: "https://www.stickermule.com/products/rectangle-stickers", inImage: "rectangle")
-    let circle = Product(inName: "Circle", inURL: "https://www.stickermule.com/products/circle-stickers", inImage: "circle.png")
-    
-    var apple : Company = Company()
-    var samsung : Company = Company()
-    var warbyParker : Company = Company()
-    var stickerMule : Company = Company()
-    
-    
     let textCellIdentifier = "reuseCell"
     var companySelected : Company = Company()
     var companies : [Company] = []
-    
-    
-
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,21 +24,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         companyTableView.delegate = self
 
         
-        
-        apple = Company(inName: "Apple", inProducts: [iPad,iPhone,macBookAir,appleWatch], inImage: "apple.png")
-        samsung = Company(inName: "Samsung", inProducts: [galaxy, galaxyNote, gear], inImage: "samsung.png")
-        warbyParker = Company(inName: "Warby Parker", inProducts: [henry,crane,eaton], inImage: "warbyparker.png")
-        stickerMule = Company(inName: "Sticker Mule", inProducts: [dieCut, rectangle, circle], inImage: "stickermule.png")
-
-        
-        companies += [apple,samsung,warbyParker,stickerMule]
-
-        
-        
-        
-        
+        let dataObject : DataStore = DataStore.sharedInstance
+        companies = dataObject.getCompanies()
     }
-    
     
     @IBAction func editButtonPressed(sender: AnyObject) {
         if inEdit == 0 {
@@ -84,11 +42,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        
         let itemToMove = companies[sourceIndexPath.row]
         companies.removeAtIndex(sourceIndexPath.row)
         companies.insert(itemToMove, atIndex: destinationIndexPath.row)
-
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -143,21 +99,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-
         let destViewController = segue.destinationViewController as! ProductViewController
         destViewController.companySelected = companySelected
-        switch companySelected.name {
-            case "Apple": destViewController.companySelected = apple
-            case "Samsung": destViewController.companySelected = samsung
-            case "Warby Parker": destViewController.companySelected = warbyParker
-            case "Sticker Mule": destViewController.companySelected = stickerMule
-            default: break
-        }
 
     }
     
-
-
 
 }
 
