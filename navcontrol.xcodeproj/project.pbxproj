@@ -11,6 +11,12 @@
 		57A4E76E1CBC408B00220204 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76D1CBC408B00220204 /* Company.swift */; };
 		57A4E7701CBC40BC00220204 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76F1CBC40BC00220204 /* Product.swift */; };
 		57A4E7721CBD2D2D00220204 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7711CBD2D2D00220204 /* DataStore.swift */; };
+		57A4E7741CBD619B00220204 /* AddCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7731CBD619B00220204 /* AddCompany.swift */; };
+		57A4E77A1CBD858A00220204 /* coffee.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7761CBD858A00220204 /* coffee.png */; };
+		57A4E77B1CBD858A00220204 /* iced.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7771CBD858A00220204 /* iced.png */; };
+		57A4E77D1CBD858A00220204 /* tea.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7791CBD858A00220204 /* tea.png */; };
+		57A4E7811CBD867500220204 /* starbucks.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7801CBD867500220204 /* starbucks.png */; };
+		57A4E7831CBD87E800220204 /* AddEditProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7821CBD87E800220204 /* AddEditProduct.swift */; };
 		57AFF7561CB8149A00A48158 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57AFF7551CB8149A00A48158 /* Default-568h@2x.png */; };
 		57F2E20C1CB56CE800B344B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */; };
 		57F2E20E1CB56CE800B344B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2E20D1CB56CE800B344B0 /* ViewController.swift */; };
@@ -42,6 +48,12 @@
 		57A4E76D1CBC408B00220204 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		57A4E76F1CBC40BC00220204 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		57A4E7711CBD2D2D00220204 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		57A4E7731CBD619B00220204 /* AddCompany.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCompany.swift; sourceTree = "<group>"; };
+		57A4E7761CBD858A00220204 /* coffee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coffee.png; sourceTree = "<group>"; };
+		57A4E7771CBD858A00220204 /* iced.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iced.png; sourceTree = "<group>"; };
+		57A4E7791CBD858A00220204 /* tea.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tea.png; sourceTree = "<group>"; };
+		57A4E7801CBD867500220204 /* starbucks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starbucks.png; sourceTree = "<group>"; };
+		57A4E7821CBD87E800220204 /* AddEditProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEditProduct.swift; sourceTree = "<group>"; };
 		57AFF7551CB8149A00A48158 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		57F2E2081CB56CE800B344B0 /* navcontrol.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = navcontrol.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +93,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		57A4E7751CBD856B00220204 /* Starbucks */ = {
+			isa = PBXGroup;
+			children = (
+				57A4E7761CBD858A00220204 /* coffee.png */,
+				57A4E7771CBD858A00220204 /* iced.png */,
+				57A4E7791CBD858A00220204 /* tea.png */,
+				57A4E7801CBD867500220204 /* starbucks.png */,
+			);
+			name = Starbucks;
+			sourceTree = "<group>";
+		};
 		57F2E1FF1CB56CE800B344B0 = {
 			isa = PBXGroup;
 			children = (
@@ -107,7 +130,9 @@
 				57A4E7711CBD2D2D00220204 /* DataStore.swift */,
 				57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */,
 				57F2E20D1CB56CE800B344B0 /* ViewController.swift */,
+				57A4E7731CBD619B00220204 /* AddCompany.swift */,
 				57F2E2211CB5ADCC00B344B0 /* ProductViewController.swift */,
+				57A4E7821CBD87E800220204 /* AddEditProduct.swift */,
 				57F2E2541CB6F1E300B344B0 /* WebViewController.swift */,
 				57F2E20F1CB56CE800B344B0 /* Main.storyboard */,
 				57F2E2121CB56CE800B344B0 /* Assets.xcassets */,
@@ -120,14 +145,11 @@
 		57F2E2231CB6E42A00B344B0 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				57A4E7751CBD856B00220204 /* Starbucks */,
 				57F2E24D1CB6EA4800B344B0 /* Sticker Mule Products */,
 				57F2E2301CB6E7F000B344B0 /* Apple Products */,
 				57F2E2391CB6E8E500B344B0 /* Samsung Products */,
 				57F2E2401CB6E99100B344B0 /* Warby Parker Products */,
-				57F2E2261CB6E43900B344B0 /* warbyparker.png */,
-				57F2E22E1CB6E52C00B344B0 /* samsung.png */,
-				57A4E7691CBC2FE600220204 /* apple.png */,
-				57F2E2271CB6E43900B344B0 /* stickermule.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -135,6 +157,7 @@
 		57F2E2301CB6E7F000B344B0 /* Apple Products */ = {
 			isa = PBXGroup;
 			children = (
+				57A4E7691CBC2FE600220204 /* apple.png */,
 				57F2E2311CB6E7FB00B344B0 /* macbookair.png */,
 				57F2E2321CB6E7FB00B344B0 /* iphone.png */,
 				57F2E2331CB6E7FB00B344B0 /* ipad.png */,
@@ -146,6 +169,7 @@
 		57F2E2391CB6E8E500B344B0 /* Samsung Products */ = {
 			isa = PBXGroup;
 			children = (
+				57F2E22E1CB6E52C00B344B0 /* samsung.png */,
 				57F2E2471CB6E9E700B344B0 /* galaxy.png */,
 				57F2E2481CB6E9E700B344B0 /* galaxynote.png */,
 				57F2E2491CB6E9E700B344B0 /* gear.png */,
@@ -156,6 +180,7 @@
 		57F2E2401CB6E99100B344B0 /* Warby Parker Products */ = {
 			isa = PBXGroup;
 			children = (
+				57F2E2261CB6E43900B344B0 /* warbyparker.png */,
 				57F2E2411CB6E99B00B344B0 /* henry.png */,
 				57F2E2421CB6E99B00B344B0 /* crane.png */,
 				57F2E2431CB6E99B00B344B0 /* eaton.png */,
@@ -166,6 +191,7 @@
 		57F2E24D1CB6EA4800B344B0 /* Sticker Mule Products */ = {
 			isa = PBXGroup;
 			children = (
+				57F2E2271CB6E43900B344B0 /* stickermule.png */,
 				57F2E24E1CB6EA5400B344B0 /* diecut.png */,
 				57F2E24F1CB6EA5400B344B0 /* rectangle.png */,
 				57F2E2501CB6EA5400B344B0 /* circle.png */,
@@ -233,13 +259,16 @@
 			files = (
 				57F2E2381CB6E7FB00B344B0 /* applewatch.png in Resources */,
 				57F2E2161CB56CE800B344B0 /* LaunchScreen.storyboard in Resources */,
+				57A4E77D1CBD858A00220204 /* tea.png in Resources */,
 				57F2E2371CB6E7FB00B344B0 /* ipad.png in Resources */,
 				57F2E2361CB6E7FB00B344B0 /* iphone.png in Resources */,
 				57F2E24C1CB6E9E700B344B0 /* gear.png in Resources */,
 				57AFF7561CB8149A00A48158 /* Default-568h@2x.png in Resources */,
 				57F2E2451CB6E99B00B344B0 /* crane.png in Resources */,
+				57A4E77A1CBD858A00220204 /* coffee.png in Resources */,
 				57F2E2351CB6E7FB00B344B0 /* macbookair.png in Resources */,
 				57F2E2531CB6EA5400B344B0 /* circle.png in Resources */,
+				57A4E7811CBD867500220204 /* starbucks.png in Resources */,
 				57F2E22A1CB6E43900B344B0 /* warbyparker.png in Resources */,
 				57A4E76A1CBC2FE600220204 /* apple.png in Resources */,
 				57F2E2441CB6E99B00B344B0 /* henry.png in Resources */,
@@ -249,6 +278,7 @@
 				57F2E2461CB6E99B00B344B0 /* eaton.png in Resources */,
 				57F2E24B1CB6E9E700B344B0 /* galaxynote.png in Resources */,
 				57F2E2521CB6EA5400B344B0 /* rectangle.png in Resources */,
+				57A4E77B1CBD858A00220204 /* iced.png in Resources */,
 				57F2E24A1CB6E9E700B344B0 /* galaxy.png in Resources */,
 				57F2E2111CB56CE800B344B0 /* Main.storyboard in Resources */,
 				57F2E2511CB6EA5400B344B0 /* diecut.png in Resources */,
@@ -265,8 +295,10 @@
 				57A4E7721CBD2D2D00220204 /* DataStore.swift in Sources */,
 				57F2E20E1CB56CE800B344B0 /* ViewController.swift in Sources */,
 				57F2E20C1CB56CE800B344B0 /* AppDelegate.swift in Sources */,
+				57A4E7741CBD619B00220204 /* AddCompany.swift in Sources */,
 				57A4E7701CBC40BC00220204 /* Product.swift in Sources */,
 				57F2E2221CB5ADCC00B344B0 /* ProductViewController.swift in Sources */,
+				57A4E7831CBD87E800220204 /* AddEditProduct.swift in Sources */,
 				57F2E2551CB6F1E300B344B0 /* WebViewController.swift in Sources */,
 				57A4E76E1CBC408B00220204 /* Company.swift in Sources */,
 			);

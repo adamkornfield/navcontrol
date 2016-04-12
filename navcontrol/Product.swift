@@ -15,10 +15,15 @@ class Product : NSObject {
     var image = ""
     
     init(inName : String, inURL : String, inImage : String) {
-        
         name = inName
         url = inURL
         image = inImage
         
     }
+    
+    convenience override init() {
+        self.init(inName: "", inURL: "", inImage: "")
+    }
+    
+
 }

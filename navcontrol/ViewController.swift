@@ -12,16 +12,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet var companyTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
+    @IBOutlet var toolbar: UIToolbar!
 
     var inEdit = 0
     let textCellIdentifier = "reuseCell"
     var companySelected : Company = Company()
     var companies : [Company] = []
+    var companyToAdd : Company = Company()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         companyTableView.dataSource = self
         companyTableView.delegate = self
+        self.navigationController?.toolbarHidden = false
 
         
         let dataObject : DataStore = DataStore.sharedInstance
@@ -99,8 +102,29 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destViewController = segue.destinationViewController as! ProductViewController
-        destViewController.companySelected = companySelected
+        if segue.identifier == "productViewControllerSegue" {
+            let destViewController = segue.destinationViewController as! ProductViewController
+            destViewController.companySelected = companySelected
+        }
+        else if segue.identifier == "addCompanySegue" {
+            let destViewController = segue.destinationViewController as! UINavigationController
+            let destinationB = destViewController.topViewController as! AddCompany
+            destinationB.newCompany = companyToAdd
+        }
+
+    }
+    
+    @IBAction func unwindCancel(sender: UIStoryboardSegue) {
+    }
+    
+    @IBAction func unwindSave(sender: UIStoryboardSegue) {
+        
+        let sourceViewController = sender.sourceViewController as! AddCompany
+        
+        companyToAdd = sourceViewController.newCompany
+        companies += [companyToAdd]
+        let newPath = NSIndexPath(forItem: companies.count - 1, inSection: 0)
+        companyTableView.insertRowsAtIndexPaths([newPath], withRowAnimation: .Bottom)
 
     }
     

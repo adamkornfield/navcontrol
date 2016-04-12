@@ -16,6 +16,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     var inEditing = 0
     var reusableCell = "productCell"
     var urlToSend : String = ""
+    var newProduct : Product = Product()
     
     override func viewDidLoad() {
         productTableView.dataSource = self
@@ -73,21 +74,9 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = productTableView.dequeueReusableCellWithIdentifier(reusableCell, forIndexPath: indexPath)
         
-        switch (companySelected.name) {
-            case "Apple": cell.textLabel?.text = companySelected.products[indexPath.row].name
-            cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 37.0)
-            case "Samsung": cell.textLabel?.text = companySelected.products[indexPath.row].name
-            cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 31.0)
-
-            case "Warby Parker": cell.textLabel?.text = companySelected.products[indexPath.row].name
-            cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 100.0)
-
-            case "Sticker Mule": cell.textLabel?.text = companySelected.products[indexPath.row].name
-                cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 40.0)
-            
-            default: break
-        }
-
+        cell.textLabel?.text = companySelected.products[indexPath.row].name
+        cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 35.0)
+        
         cell.showsReorderControl = true
         
         return cell
@@ -125,7 +114,25 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
 
         
     }
+    
+    @IBAction func unwindProductCancel(sender:UIStoryboardSegue) {
+        
+    }
+    
+    
+    @IBAction func unwindProductSave(sender:UIStoryboardSegue) {
+        
+        let sourceViewController = sender.sourceViewController as! AddEditProduct
+        newProduct = sourceViewController.newProduct
+        
+        companySelected.products += [newProduct]
+        
+        let newIndexPath = NSIndexPath(forItem: companySelected.products.count - 1, inSection: 0)
+        productTableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+        
+    }
 
+    
     
 
     
