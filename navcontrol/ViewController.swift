@@ -12,22 +12,39 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet var companyTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
-    var companySelected  = ""
+
     var inEdit = 0
-    var companies = ["Apple", "Samsung","Warby Parker","Sticker Mule"]
     
-    var appleProducts:[String] =  ["iPad", "iPhone", "MacBook Air","Apple Watch"]
-    var samsungProducts:[String] = ["Galaxy", "Galaxy Note","Gear"]
-    var warbyParkerProducts:[String] = ["Henry","Crane","Eaton"]
-    var stickerMuleProducts:[String] = ["Die Cut","Rectangle","Circle"]
+    let iPad  = Product(inName: "iPad", inURL: "http://www.apple.com/ipad/", inImage: "ipad.png")
+    let iPhone = Product(inName: "iPhone", inURL: "http://www.apple.com/iphone/", inImage: "iphone.png")
+    let macBookAir = Product(inName: "MacBook Air", inURL: "http://www.apple.com/macbook-air/", inImage: "macbookair.png")
+    let appleWatch = Product(inName: "Apple Watch", inURL: "http://www.apple.com/watch/", inImage: "applewatch.png")
     
-    var appleProds : CompanyProducts?
-    var samsungProds : CompanyProducts?
-    var warbyParkerProds : CompanyProducts?
-    var stickerMuleProds : CompanyProducts?
+    let galaxy = Product(inName: "Galaxy", inURL: "https://www.samsung.com/us/mobile/cell-phones/SM-G935AZDAATT", inImage: "galaxy.png")
+    let galaxyNote = Product(inName: "Galaxy Note", inURL: "http://www.samsung.com/us/mobile/cell-phones/SM-N920AZKAATT", inImage: "galaxynote.png")
+    let gear = Product(inName: "Gear", inURL: "http://www.samsung.com/us/mobile/wearable-tech/SM-R7200ZWAXAR", inImage: "gear.png")
+    
+    let henry = Product(inName: "Henry", inURL: "https://www.warbyparker.com/eyeglasses/men/henry/port-blue", inImage: "henry.png")
+    let crane = Product(inName: "Crane", inURL: "https://www.warbyparker.com/eyeglasses/men/crane/atlantic-blue", inImage: "crane.png")
+    let eaton = Product(inName: "Eaton", inURL: "https://www.warbyparker.com/eyeglasses/men/eaton/tree-swallow-fade", inImage: "eaton.png")
+    
+    let dieCut = Product(inName: "Die Cut", inURL: "https://www.stickermule.com/products/die-cut-stickers", inImage: "diecut.png")
+    let rectangle = Product(inName: "Rectangle", inURL: "https://www.stickermule.com/products/rectangle-stickers", inImage: "rectangle")
+    let circle = Product(inName: "Circle", inURL: "https://www.stickermule.com/products/circle-stickers", inImage: "circle.png")
+    
+    var apple : Company = Company()
+    var samsung : Company = Company()
+    var warbyParker : Company = Company()
+    var stickerMule : Company = Company()
     
     
     let textCellIdentifier = "reuseCell"
+    var companySelected : Company = Company()
+    var companies : [Company] = []
+    
+    
+
+    
     
     
     
@@ -35,11 +52,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         companyTableView.dataSource = self
         companyTableView.delegate = self
+
         
-        appleProds = CompanyProducts(inProducts: appleProducts)
-        samsungProds = CompanyProducts(inProducts: samsungProducts)
-        warbyParkerProds = CompanyProducts(inProducts: warbyParkerProducts)
-        stickerMuleProds = CompanyProducts(inProducts: stickerMuleProducts)
+        
+        apple = Company(inName: "Apple", inProducts: [iPad,iPhone,macBookAir,appleWatch], inImage: "apple.png")
+        samsung = Company(inName: "Samsung", inProducts: [galaxy, galaxyNote, gear], inImage: "samsung.png")
+        warbyParker = Company(inName: "Warby Parker", inProducts: [henry,crane,eaton], inImage: "warbyparker.png")
+        stickerMule = Company(inName: "Sticker Mule", inProducts: [dieCut, rectangle, circle], inImage: "stickermule.png")
+
+        
+        companies += [apple,samsung,warbyParker,stickerMule]
+
+        
+        
         
         
     }
@@ -87,8 +112,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath)
-        cell.textLabel?.text = companies[indexPath.row]
-        cell.imageView?.image = resizeImage(UIImage(named: companies[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: "") + ".png")!, newWidth: 100.0)
+        cell.textLabel?.text = companies[indexPath.row].name
+        cell.imageView?.image = resizeImage(UIImage(named: companies[indexPath.row].image)!, newWidth: 100.0)
         cell.showsReorderControl = true
 
         return cell
@@ -121,12 +146,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         let destViewController = segue.destinationViewController as! ProductViewController
         destViewController.companySelected = companySelected
-        switch companySelected {
-        case "Apple": destViewController.companyProducts = appleProds
-            case "Samsung": destViewController.companyProducts = samsungProds
-            case "Warby Parker": destViewController.companyProducts = warbyParkerProds
-            case "Sticker Mule": destViewController.companyProducts = stickerMuleProds
-            default: self.title = "Products"
+        switch companySelected.name {
+            case "Apple": destViewController.companySelected = apple
+            case "Samsung": destViewController.companySelected = samsung
+            case "Warby Parker": destViewController.companySelected = warbyParker
+            case "Sticker Mule": destViewController.companySelected = stickerMule
+            default: break
         }
 
     }

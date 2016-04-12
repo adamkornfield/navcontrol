@@ -12,34 +12,19 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     @IBOutlet var productTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
-    var companySelected  = ""
-    var companyProducts : CompanyProducts?
+    var companySelected  : Company = Company()
     var inEditing = 0
-    
     var reusableCell = "productCell"
-    
-    
-
-    
-    
-    let appleProductLinks : [String:String] = ["iPad" : "http://www.apple.com/ipad/","iPhone" : "http://www.apple.com/iphone/","MacBook Air" : "http://www.apple.com/macbook-air/","Apple Watch" : "http://www.apple.com/watch/"]
-    let samsungProductLinks = ["Galaxy" : "https://www.samsung.com/us/mobile/cell-phones/SM-G935AZDAATT", "Galaxy Note" : "http://www.samsung.com/us/mobile/cell-phones/SM-N920AZKAATT","Gear" : "http://www.samsung.com/us/mobile/wearable-tech/SM-R7200ZWAXAR"]
-    let warbyParkerProductLinks = ["Henry" : "https://www.warbyparker.com/eyeglasses/men/henry/port-blue","Crane" : "https://www.warbyparker.com/eyeglasses/men/crane/atlantic-blue","Eaton" : "https://www.warbyparker.com/eyeglasses/men/eaton/tree-swallow-fade"]
-    let stickerMuleProductLinks = ["Die Cut" : "https://www.stickermule.com/products/die-cut-stickers","Rectangle" : "https://www.stickermule.com/products/rectangle-stickers","Circle" : "https://www.stickermule.com/products/circle-stickers"]
-    
     var urlToSend : String = ""
     
     override func viewDidLoad() {
         productTableView.dataSource = self
         productTableView.delegate = self
         
-        self.title = companySelected
-
-        
-
-
-        
+        self.title = companySelected.name
     }
+    
+    
     @IBAction func editButtonPressed(sender: AnyObject) {
         
         if inEditing == 0 {
@@ -57,16 +42,12 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
-        let itemToMove = companyProducts?.products[sourceIndexPath.row]
-        companyProducts?.products.removeAtIndex(sourceIndexPath.row)
-        companyProducts?.products.insert(itemToMove!, atIndex: destinationIndexPath.row)
-        
-        
+        let itemToMove = companySelected.products[sourceIndexPath.row]
+        companySelected.products.removeAtIndex(sourceIndexPath.row)
+        companySelected.products.insert(itemToMove, atIndex: destinationIndexPath.row)
 
     }
-    
 
-    
     
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -75,7 +56,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 
-        companyProducts?.products.removeAtIndex(indexPath.row)
+        companySelected.products.removeAtIndex(indexPath.row)
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
     
@@ -85,22 +66,25 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-            return (companyProducts?.products.count)!
+            return (companySelected.products.count)
    
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = productTableView.dequeueReusableCellWithIdentifier(reusableCell, forIndexPath: indexPath)
         
-        switch companySelected {
-            case "Apple": cell.textLabel?.text = companyProducts?.products[indexPath.row]
-                    cell.imageView?.image = resizeImage(UIImage(named: (companyProducts?.products[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: ""))! + ".png")!, newWidth: 37.0)
-            case "Samsung": cell.textLabel?.text = companyProducts?.products[indexPath.row]
-                cell.imageView?.image = resizeImage(UIImage(named: (companyProducts?.products[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: ""))! + ".png")!, newWidth: 31.0)
-            case "Warby Parker": cell.textLabel?.text = companyProducts?.products[indexPath.row]
-                cell.imageView?.image = resizeImage(UIImage(named: (companyProducts?.products[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: ""))! + ".png")!, newWidth: 100.0)
-            case "Sticker Mule": cell.textLabel?.text = companyProducts?.products[indexPath.row]
-                cell.imageView?.image = resizeImage(UIImage(named: (companyProducts?.products[indexPath.row].lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: ""))! + ".png")!, newWidth: 40.0)
+        switch (companySelected.name) {
+            case "Apple": cell.textLabel?.text = companySelected.products[indexPath.row].name
+            cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 37.0)
+            case "Samsung": cell.textLabel?.text = companySelected.products[indexPath.row].name
+            cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 31.0)
+
+            case "Warby Parker": cell.textLabel?.text = companySelected.products[indexPath.row].name
+            cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 100.0)
+
+            case "Sticker Mule": cell.textLabel?.text = companySelected.products[indexPath.row].name
+                cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 40.0)
+            
             default: break
         }
 
@@ -125,18 +109,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-   
-
-        
-        switch companySelected {
-            case "Apple": urlToSend = appleProductLinks[(companyProducts?.products[indexPath.row])!]!
-            case "Samsung": urlToSend = samsungProductLinks[(companyProducts?.products[indexPath.row])!]!
-            case "Warby Parker": urlToSend = warbyParkerProductLinks[(companyProducts?.products[indexPath.row])!]!
-            case "Sticker Mule": urlToSend = stickerMuleProductLinks[(companyProducts?.products[indexPath.row])!]!
-            default: urlToSend = "http://google.com"
-        }
-
-        
+        urlToSend = companySelected.products[indexPath.row].url
         performSegueWithIdentifier("webViewSegue", sender: self)
         
         
