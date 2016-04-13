@@ -13,6 +13,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet var companyTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
     @IBOutlet var toolbar: UIToolbar!
+    @IBOutlet var logoImageView: UIImageView!
 
     let textCellIdentifier = "reuseCell"
     var companySelected : Company = Company()
@@ -31,6 +32,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let dataObject : DataStore = DataStore.sharedInstance
         companies = dataObject.getCompanies()
+        
+        getStockPrice(companies)
     }
     
     @IBAction func editButtonPressed(sender: AnyObject) {
@@ -72,15 +75,29 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath)
-        cell.textLabel?.text = companies[indexPath.row].name
-        cell.imageView?.image = resizeImage(UIImage(named: companies[indexPath.row].image)!, newWidth: 100.0)
+        let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath) as! CompanyTableViewCell
+        //cell.textLabel?.text = companies[indexPath.row].name
+        //cell.imageView?.image = resizeImage(UIImage(named: companies[indexPath.row].image)!, newWidth: 100.0)
         cell.showsReorderControl = false
+        
+        cell.companyNameLabel.text = companies[indexPath.row].name
+        cell.logoImageView.image = resizeImage(UIImage(named: companies[indexPath.row].image)!, newWidth: 100.0)
+        cell.stockSymbolLabel.text = companies[indexPath.row].stock
+        if companies[indexPath.row].stockPrice == 0.0 {
+            cell.stockPriceLabel.text = "Private"
+        }
+        else {
+            cell.stockPriceLabel.text = String(companies[indexPath.row].stockPrice)
+        }
         
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.didLongPressGesture) )
         longPressGesture.minimumPressDuration = 0.5
         cell.addGestureRecognizer(longPressGesture)
         return cell
+    }
+    
+    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return false
     }
     
     
@@ -126,7 +143,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBAction func unwindCancel(sender: UIStoryboardSegue) {
-        if inEdit==1 {
+        if inEdit==1 && companyTableView.editing == false {
             inEdit = 0
         }
     }

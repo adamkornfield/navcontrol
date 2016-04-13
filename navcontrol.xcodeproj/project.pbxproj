@@ -18,6 +18,8 @@
 		57A4E7811CBD867500220204 /* starbucks.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7801CBD867500220204 /* starbucks.png */; };
 		57A4E7831CBD87E800220204 /* AddEditProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7821CBD87E800220204 /* AddEditProduct.swift */; };
 		57A4E7851CBE943A00220204 /* resizeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7841CBE943A00220204 /* resizeImage.swift */; };
+		57A4E7871CBED79C00220204 /* CompanyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7861CBED79C00220204 /* CompanyTableViewCell.swift */; };
+		57A4E7891CBEE03A00220204 /* getStockPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7881CBEE03A00220204 /* getStockPrice.swift */; };
 		57AFF7561CB8149A00A48158 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57AFF7551CB8149A00A48158 /* Default-568h@2x.png */; };
 		57F2E20C1CB56CE800B344B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */; };
 		57F2E20E1CB56CE800B344B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2E20D1CB56CE800B344B0 /* ViewController.swift */; };
@@ -56,6 +58,8 @@
 		57A4E7801CBD867500220204 /* starbucks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starbucks.png; sourceTree = "<group>"; };
 		57A4E7821CBD87E800220204 /* AddEditProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEditProduct.swift; sourceTree = "<group>"; };
 		57A4E7841CBE943A00220204 /* resizeImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = resizeImage.swift; sourceTree = "<group>"; };
+		57A4E7861CBED79C00220204 /* CompanyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyTableViewCell.swift; sourceTree = "<group>"; };
+		57A4E7881CBEE03A00220204 /* getStockPrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = getStockPrice.swift; sourceTree = "<group>"; };
 		57AFF7551CB8149A00A48158 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		57F2E2081CB56CE800B344B0 /* navcontrol.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = navcontrol.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -130,6 +134,7 @@
 				57A4E76D1CBC408B00220204 /* Company.swift */,
 				57A4E76F1CBC40BC00220204 /* Product.swift */,
 				57A4E7711CBD2D2D00220204 /* DataStore.swift */,
+				57A4E7881CBEE03A00220204 /* getStockPrice.swift */,
 				57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */,
 				57F2E20D1CB56CE800B344B0 /* ViewController.swift */,
 				57A4E7731CBD619B00220204 /* AddEditCompany.swift */,
@@ -138,6 +143,7 @@
 				57A4E7841CBE943A00220204 /* resizeImage.swift */,
 				57F2E2541CB6F1E300B344B0 /* WebViewController.swift */,
 				57F2E20F1CB56CE800B344B0 /* Main.storyboard */,
+				57A4E7861CBED79C00220204 /* CompanyTableViewCell.swift */,
 				57F2E2121CB56CE800B344B0 /* Assets.xcassets */,
 				57F2E2141CB56CE800B344B0 /* LaunchScreen.storyboard */,
 				57F2E2171CB56CE800B344B0 /* Info.plist */,
@@ -299,6 +305,8 @@
 				57F2E20E1CB56CE800B344B0 /* ViewController.swift in Sources */,
 				57F2E20C1CB56CE800B344B0 /* AppDelegate.swift in Sources */,
 				57A4E7741CBD619B00220204 /* AddEditCompany.swift in Sources */,
+				57A4E7871CBED79C00220204 /* CompanyTableViewCell.swift in Sources */,
+				57A4E7891CBEE03A00220204 /* getStockPrice.swift in Sources */,
 				57A4E7701CBC40BC00220204 /* Product.swift in Sources */,
 				57F2E2221CB5ADCC00B344B0 /* ProductViewController.swift in Sources */,
 				57A4E7831CBD87E800220204 /* AddEditProduct.swift in Sources */,

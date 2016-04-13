@@ -36,10 +36,10 @@ class DataStore : NSObject  {
     var stickerMule : Company = Company()
     
     private override init() {
-        apple = Company(inName: "Apple", inProducts: [iPad,iPhone,macBookAir,appleWatch], inImage: "apple.png")
-        samsung = Company(inName: "Samsung", inProducts: [galaxy, galaxyNote, gear], inImage: "samsung.png")
-        warbyParker = Company(inName: "Warby Parker", inProducts: [henry,crane,eaton], inImage: "warbyparker.png")
-        stickerMule = Company(inName: "Sticker Mule", inProducts: [dieCut, rectangle, circle], inImage: "stickermule.png")
+        apple = Company(inName: "Apple", inProducts: [iPad,iPhone,macBookAir,appleWatch], inImage: "apple.png", inStock: "AAPL")
+        samsung = Company(inName: "Samsung", inProducts: [galaxy, galaxyNote, gear], inImage: "samsung.png", inStock: "005930.KS")
+        warbyParker = Company(inName: "Warby Parker", inProducts: [henry,crane,eaton], inImage: "warbyparker.png", inStock: "")
+        stickerMule = Company(inName: "Sticker Mule", inProducts: [dieCut, rectangle, circle], inImage: "stickermule.png", inStock: "")
     }
     
     func getCompanies() -> [Company] {

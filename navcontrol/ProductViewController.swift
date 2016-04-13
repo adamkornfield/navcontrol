@@ -133,7 +133,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     }
     
     @IBAction func unwindProductCancel(sender:UIStoryboardSegue) {
-        if inEdit == 1 {
+        if inEdit == 1 && productTableView.editing == false {
             inEdit = 0
         }
     }
