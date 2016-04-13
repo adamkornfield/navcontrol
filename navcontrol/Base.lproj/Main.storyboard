@@ -55,7 +55,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="dJX-yr-DxJ"/>
                         <barButtonItem systemItem="add" id="vNU-t6-rzB">
                             <connections>
-                                <segue destination="vzN-Zt-Aum" kind="presentation" identifier="addCompanySegue" id="UhY-za-NGV"/>
+                                <segue destination="vzN-Zt-Aum" kind="presentation" identifier="addEditCompanySegue" id="TIy-W0-rvf"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
@@ -76,10 +76,10 @@
             </objects>
             <point key="canvasLocation" x="682" y="362"/>
         </scene>
-        <!--Add Company-->
+        <!--Add Edit Company-->
         <scene sceneID="tcf-kb-i9P">
             <objects>
-                <viewController id="PWK-oF-pNh" customClass="AddCompany" customModule="navcontrol" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="PWK-oF-pNh" customClass="AddEditCompany" customModule="navcontrol" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ANu-X0-iH3"/>
                         <viewControllerLayoutGuide type="bottom" id="kst-DD-FLE"/>
@@ -129,7 +129,7 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="rDU-yz-DOU">
-                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="cancel" id="CEg-yk-mOL">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="CEg-yk-mOL">
                             <connections>
                                 <segue destination="kTh-Uh-AxM" kind="unwind" unwindAction="unwindCancel:" id="Pqb-3S-KoR"/>
                             </connections>
@@ -191,7 +191,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="aBO-Vw-BZt"/>
                         <barButtonItem systemItem="add" id="QYG-gm-UCZ">
                             <connections>
-                                <segue destination="B5D-3w-uxD" kind="presentation" id="jbl-Kn-6eb"/>
+                                <segue destination="B5D-3w-uxD" kind="presentation" identifier="AddEditProductSegue" id="jbl-Kn-6eb"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
@@ -366,7 +366,7 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="tPA-x1-MQb">
-                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="cancel" id="nQl-vC-23u">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nQl-vC-23u">
                             <connections>
                                 <segue destination="6zy-ll-d9o" kind="unwind" unwindAction="unwindProductCancel:" id="lpy-ip-4yv"/>
                             </connections>

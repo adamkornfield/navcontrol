@@ -14,11 +14,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet var editButton: UIBarButtonItem!
     @IBOutlet var toolbar: UIToolbar!
 
-    var inEdit = 0
     let textCellIdentifier = "reuseCell"
     var companySelected : Company = Company()
     var companies : [Company] = []
-    var companyToAdd : Company = Company()
+    var newCompany : Company = Company()
+    var inEdit = 0
+    var longPressGesture : UILongPressGestureRecognizer = UILongPressGestureRecognizer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,13 +27,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         companyTableView.delegate = self
         self.navigationController?.toolbarHidden = false
 
+        companyTableView.allowsSelectionDuringEditing = true
         
         let dataObject : DataStore = DataStore.sharedInstance
         companies = dataObject.getCompanies()
     }
     
     @IBAction func editButtonPressed(sender: AnyObject) {
-        if inEdit == 0 {
+        if companyTableView.editing == false {
             companyTableView.setEditing(true, animated: true)
             editButton.title = "Done"
             inEdit = 1
@@ -73,32 +75,40 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath)
         cell.textLabel?.text = companies[indexPath.row].name
         cell.imageView?.image = resizeImage(UIImage(named: companies[indexPath.row].image)!, newWidth: 100.0)
-        cell.showsReorderControl = true
-
+        cell.showsReorderControl = false
+        
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.didLongPressGesture) )
+        longPressGesture.minimumPressDuration = 0.5
+        cell.addGestureRecognizer(longPressGesture)
         return cell
     }
     
     
-    func resizeImage(image:UIImage, newWidth: CGFloat) -> UIImage {
-    
-        let newScale = newWidth/image.size.width
-        let newHeight = newScale * image.size.height
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: newWidth, height: newHeight), false, 0.0)
-        image.drawInRect(CGRect(x: 0.0, y: 0.0, width: newWidth, height: newHeight))
-        let theNewImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return theNewImage
-    }
-    
 
+   
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         companySelected = companies[indexPath.row]
-        performSegueWithIdentifier("productViewControllerSegue", sender:indexPath)
+        if tableView.editing == false {
+            performSegueWithIdentifier("productViewControllerSegue", sender:indexPath)
+        }
+        else if tableView.editing == true {
+            performSegueWithIdentifier("addEditCompanySegue", sender:self)
+        }
+
     }
     
+    func didLongPressGesture(longPressGesture : UILongPressGestureRecognizer) {
+        if longPressGesture.state == .Began {
+            let pressLocation = longPressGesture.locationInView(companyTableView)
+            if let pressedIndexPath = companyTableView.indexPathForRowAtPoint(pressLocation) {
+                    companySelected = companies[pressedIndexPath.row]
+                    inEdit = 1
+                    performSegueWithIdentifier("addEditCompanySegue", sender:self)
+            }
+        }
+    }
 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -106,25 +116,39 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             let destViewController = segue.destinationViewController as! ProductViewController
             destViewController.companySelected = companySelected
         }
-        else if segue.identifier == "addCompanySegue" {
+        else if segue.identifier == "addEditCompanySegue" {
             let destViewController = segue.destinationViewController as! UINavigationController
-            let destinationB = destViewController.topViewController as! AddCompany
-            destinationB.newCompany = companyToAdd
+            let destinationB = destViewController.topViewController as! AddEditCompany
+            destinationB.company = companySelected
+            destinationB.editExisting = inEdit
         }
 
     }
     
     @IBAction func unwindCancel(sender: UIStoryboardSegue) {
+        if inEdit==1 {
+            inEdit = 0
+        }
     }
+    
     
     @IBAction func unwindSave(sender: UIStoryboardSegue) {
         
-        let sourceViewController = sender.sourceViewController as! AddCompany
+        let sourceViewController = sender.sourceViewController as! AddEditCompany
         
-        companyToAdd = sourceViewController.newCompany
-        companies += [companyToAdd]
-        let newPath = NSIndexPath(forItem: companies.count - 1, inSection: 0)
-        companyTableView.insertRowsAtIndexPaths([newPath], withRowAnimation: .Bottom)
+        if inEdit == 0 {
+            newCompany = sourceViewController.company
+            companies += [newCompany]
+            let newPath = NSIndexPath(forItem: companies.count - 1, inSection: 0)
+            companyTableView.insertRowsAtIndexPaths([newPath], withRowAnimation: .Bottom)
+        }
+        else {
+            companyTableView.editing = false
+            editButton.title = "Edit"
+            inEdit = 0
+            companyTableView.reloadData()
+            
+        }
 
     }
     

@@ -19,14 +19,31 @@ class AddEditProduct : UIViewController, UITextFieldDelegate {
     @IBOutlet var webpageURLTextField: UITextField!
     
     var newProduct : Product = Product()
+    var inEditing = 0
     
     override func viewDidLoad() {
         
-        saveButton.enabled = false
-        self.title = "Add Product"
+        if Bool(inEditing) {
+            saveButton.enabled = true
+        }
+        else {
+            saveButton.enabled = false
+        }
+        
+        
         productNameTextField.delegate = self
         imageNameTextField.delegate = self
         webpageURLTextField.delegate = self
+        
+        if inEditing == 0 {
+            self.title = "Add Product"
+        }
+        else {
+            self.title = "Edit Product"
+            productNameTextField.text = newProduct.name
+            imageNameTextField.text = newProduct.image
+            webpageURLTextField.text = newProduct.url
+        }
     }
     
 
@@ -37,11 +54,25 @@ class AddEditProduct : UIViewController, UITextFieldDelegate {
         }
     }
     
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        if (productNameTextField.text! != "" && imageNameTextField.text! != "" && webpageURLTextField.text! != "") {
+            saveButton.enabled = true
+        }
+        return true
+    }
+    
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if sender as! UIBarButtonItem == saveButton {
-            newProduct = Product(inName: productNameTextField.text!, inURL: webpageURLTextField.text! , inImage: imageNameTextField.text!)
+            if inEditing == 0 {
+                newProduct = Product(inName: productNameTextField.text!, inURL: webpageURLTextField.text! , inImage: imageNameTextField.text!)
+            }
+            else {
+                newProduct.name = productNameTextField.text!
+                newProduct.image = imageNameTextField.text!
+                newProduct.url = webpageURLTextField.text!
+            }
         }
     }
     

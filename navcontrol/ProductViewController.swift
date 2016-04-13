@@ -13,31 +13,31 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet var productTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
     var companySelected  : Company = Company()
-    var inEditing = 0
     var reusableCell = "productCell"
+    var inEdit = 0
     var urlToSend : String = ""
     var newProduct : Product = Product()
+    
     
     override func viewDidLoad() {
         productTableView.dataSource = self
         productTableView.delegate = self
-        
+        productTableView.allowsSelectionDuringEditing = true
         self.title = companySelected.name
     }
     
     
     @IBAction func editButtonPressed(sender: AnyObject) {
         
-        if inEditing == 0 {
+        if productTableView.editing == false {
             productTableView.setEditing(true, animated: true)
             self.navigationItem.rightBarButtonItem?.title = "Done"
-            inEditing = 1
+            inEdit = 1
         }
         else {
             productTableView.setEditing(false, animated: true)
             self.navigationItem.rightBarButtonItem?.title = "Edit"
-            inEditing = 0
-
+            inEdit = 0
         }
     }
     
@@ -76,30 +76,38 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         
         cell.textLabel?.text = companySelected.products[indexPath.row].name
         cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 35.0)
-        
         cell.showsReorderControl = true
+        let pressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ProductViewController.didLongPressGesture(_:)))
+        pressGestureRecognizer.minimumPressDuration = 0.5
+        cell.addGestureRecognizer(pressGestureRecognizer)
         
         return cell
     }
     
     
-    func resizeImage(image:UIImage, newWidth: CGFloat) -> UIImage {
+    func didLongPressGesture(longPressGesture : UILongPressGestureRecognizer) {
         
-        let newScale = newWidth/image.size.width
-        let newHeight = newScale * image.size.height
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: newWidth, height: newHeight), false, 0.0)
-        image.drawInRect(CGRect(x: 0.0, y: 0.0, width: newWidth, height: newHeight))
-        let theNewImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        if longPressGesture.state == .Began {
+            let gestureLocation = longPressGesture.locationInView(productTableView)
+            if let indexPath = productTableView.indexPathForRowAtPoint(gestureLocation) {
+                newProduct = companySelected.products[indexPath.row]
+                inEdit = 1
+                performSegueWithIdentifier("AddEditProductSegue", sender: self)
+            }
+        }
         
-        return theNewImage
     }
-    
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        urlToSend = companySelected.products[indexPath.row].url
-        performSegueWithIdentifier("webViewSegue", sender: self)
+        if tableView.editing == false {
+            urlToSend = companySelected.products[indexPath.row].url
+            performSegueWithIdentifier("webViewSegue", sender: self)
+        }
+        else {
+            newProduct = companySelected.products[indexPath.row]
+            performSegueWithIdentifier("AddEditProductSegue", sender: self)
+        }
         
         
     }
@@ -110,13 +118,24 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
             let destinationVC = segue.destinationViewController as! WebViewController
             destinationVC.urlString = urlToSend
         }
+        else if segue.identifier == "AddEditProductSegue" {
+            let destinationVC = segue.destinationViewController as! UINavigationController
+            let destinationB = destinationVC.topViewController as! AddEditProduct
+            destinationB.newProduct = newProduct
+            destinationB.inEditing = inEdit
+            if inEdit == 0 {
+                productTableView.editing = false
+            }
+        }
 
 
         
     }
     
     @IBAction func unwindProductCancel(sender:UIStoryboardSegue) {
-        
+        if inEdit == 1 {
+            inEdit = 0
+        }
     }
     
     
@@ -125,11 +144,17 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         let sourceViewController = sender.sourceViewController as! AddEditProduct
         newProduct = sourceViewController.newProduct
         
-        companySelected.products += [newProduct]
-        
-        let newIndexPath = NSIndexPath(forItem: companySelected.products.count - 1, inSection: 0)
-        productTableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
-        
+        if inEdit == 0 {
+            companySelected.products += [newProduct]
+            let newIndexPath = NSIndexPath(forItem: companySelected.products.count - 1, inSection: 0)
+            productTableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+        }
+        else {
+            inEdit = 0
+            productTableView.editing = false
+            editButton.title = "Edit"
+            productTableView.reloadData()
+        }
     }
 
     
