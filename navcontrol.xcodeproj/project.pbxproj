@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		575711341CBEF75000401FC8 /* BrandonGrotesque-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 575711331CBEF74C00401FC8 /* BrandonGrotesque-Regular.otf */; };
 		57A4E76A1CBC2FE600220204 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7691CBC2FE600220204 /* apple.png */; };
 		57A4E76E1CBC408B00220204 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76D1CBC408B00220204 /* Company.swift */; };
 		57A4E7701CBC40BC00220204 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76F1CBC40BC00220204 /* Product.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		575711331CBEF74C00401FC8 /* BrandonGrotesque-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BrandonGrotesque-Regular.otf"; sourceTree = "<group>"; };
 		57A4E7691CBC2FE600220204 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
 		57A4E76D1CBC408B00220204 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		57A4E76F1CBC40BC00220204 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -134,10 +136,10 @@
 				57A4E76D1CBC408B00220204 /* Company.swift */,
 				57A4E76F1CBC40BC00220204 /* Product.swift */,
 				57A4E7711CBD2D2D00220204 /* DataStore.swift */,
-				57A4E7881CBEE03A00220204 /* getStockPrice.swift */,
 				57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */,
 				57F2E20D1CB56CE800B344B0 /* ViewController.swift */,
 				57A4E7731CBD619B00220204 /* AddEditCompany.swift */,
+				57A4E7881CBEE03A00220204 /* getStockPrice.swift */,
 				57F2E2211CB5ADCC00B344B0 /* ProductViewController.swift */,
 				57A4E7821CBD87E800220204 /* AddEditProduct.swift */,
 				57A4E7841CBE943A00220204 /* resizeImage.swift */,
@@ -146,6 +148,7 @@
 				57A4E7861CBED79C00220204 /* CompanyTableViewCell.swift */,
 				57F2E2121CB56CE800B344B0 /* Assets.xcassets */,
 				57F2E2141CB56CE800B344B0 /* LaunchScreen.storyboard */,
+				575711331CBEF74C00401FC8 /* BrandonGrotesque-Regular.otf */,
 				57F2E2171CB56CE800B344B0 /* Info.plist */,
 			);
 			path = navcontrol;
@@ -279,6 +282,7 @@
 				57F2E2531CB6EA5400B344B0 /* circle.png in Resources */,
 				57A4E7811CBD867500220204 /* starbucks.png in Resources */,
 				57F2E22A1CB6E43900B344B0 /* warbyparker.png in Resources */,
+				575711341CBEF75000401FC8 /* BrandonGrotesque-Regular.otf in Resources */,
 				57A4E76A1CBC2FE600220204 /* apple.png in Resources */,
 				57F2E2441CB6E99B00B344B0 /* henry.png in Resources */,
 				57F2E22F1CB6E52C00B344B0 /* samsung.png in Resources */,

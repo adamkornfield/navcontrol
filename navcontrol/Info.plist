@@ -36,6 +36,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>UIAppFonts</key>
+    <array>
+        <string>BrandonGrotesque-Regular.otf</string>
+    </array>
     <key>NSAppTransportSecurity</key>
     <dict>
         <key>NSExceptionDomains</key>

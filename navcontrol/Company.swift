@@ -14,7 +14,7 @@ class Company : NSObject {
     var products : [Product] = []
     var image = ""
     var stock = ""
-    var stockPrice = 0.0
+    var stockPrice = ""
     
     init(inName : String, inProducts : [Product], inImage : String, inStock : String) {
         name = inName

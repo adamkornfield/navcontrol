@@ -8,7 +8,7 @@
 
 import UIKit
 
-func getStockPrice(companies : [Company]) {
+func getStockPrice(companies : [Company], companyTableView : UITableView) {
     
     var allCompanyStocks = ""
     var count = 0
@@ -25,8 +25,8 @@ func getStockPrice(companies : [Company]) {
     
     
     allCompanyStocks.removeAtIndex(allCompanyStocks.endIndex.predecessor())
-    print(allCompanyStocks)
-    print(positionsWithStocks)
+    //print(allCompanyStocks)
+    //print(positionsWithStocks)
     
     let url = "http://finance.yahoo.com/d/quotes.csv?s=" + allCompanyStocks + "&f=l1"
     
@@ -44,12 +44,30 @@ func getStockPrice(companies : [Company]) {
                 let datastring = NSString(data: data!, encoding: NSUTF8StringEncoding)
                 priceArray  = (datastring?.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet()))!
                 priceArray.removeLast()
-                print(priceArray)
+                //print(priceArray)
                 
                 
                 
                 
-            } else {
+                func updatePrices() {
+                    for count in 0 ..< priceArray.count {
+                        if companies[positionsWithStocks[count]].stock == "005930.KS" {
+                            companies[positionsWithStocks[count]].stockPrice = String(format: "%.2f", Double(priceArray[count])!/1145.60)
+                                
+                        }
+                        else {
+                            companies[positionsWithStocks[count]].stockPrice = String(format: "%.2f", Double(priceArray[count])!)
+                        }
+                    }
+                    companyTableView.reloadData()
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), updatePrices)
+
+
+                
+            }
+            else {
               
                 
             }

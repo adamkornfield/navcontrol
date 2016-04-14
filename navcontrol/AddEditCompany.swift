@@ -15,6 +15,8 @@ class AddEditCompany : UIViewController, UITextFieldDelegate {
     
     @IBOutlet var coNameTextField: UITextField!
     @IBOutlet var logoTextfield: UITextField!
+    @IBOutlet var stockSymbolTextField: UITextField!
+    
     @IBOutlet var cancelButton: UIBarButtonItem!
     @IBOutlet var saveButton: UIBarButtonItem!
     
@@ -22,6 +24,7 @@ class AddEditCompany : UIViewController, UITextFieldDelegate {
         
         coNameTextField.delegate = self
         logoTextfield.delegate = self
+        stockSymbolTextField.delegate = self
         
         
         if editExisting == 0 {
@@ -33,17 +36,18 @@ class AddEditCompany : UIViewController, UITextFieldDelegate {
             saveButton.enabled = true
             coNameTextField.text = company.name
             logoTextfield.text = company.image
+            stockSymbolTextField.text = company.stock
         }
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        if (coNameTextField.text! != "" && logoTextfield.text! != "") {
+        if (coNameTextField.text! != "" && logoTextfield.text! != "" && stockSymbolTextField.text! != "") {
             saveButton.enabled = true
         }
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        if (coNameTextField.text! != "" && logoTextfield.text! != "") {
+        if (coNameTextField.text! != "" && logoTextfield.text! != "" && stockSymbolTextField.text! != "") {
             saveButton.enabled = true
         }
         return true
@@ -53,17 +57,19 @@ class AddEditCompany : UIViewController, UITextFieldDelegate {
     @IBAction func removeKeyboards(sender: AnyObject) {
         coNameTextField.resignFirstResponder()
         logoTextfield.resignFirstResponder()
+        stockSymbolTextField.resignFirstResponder()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if sender as! UIBarButtonItem == saveButton {
             
             if editExisting == 0 {
-                company = Company(inName: coNameTextField.text!, inProducts: [], inImage: logoTextfield.text!, inStock: "")
+                company = Company(inName: coNameTextField.text!, inProducts: [], inImage: logoTextfield.text!, inStock: stockSymbolTextField.text!)
             }
             else {
                 company.name = coNameTextField.text!
                 company.image = logoTextfield.text!
+                company.stock = stockSymbolTextField.text!
             }
             
         }

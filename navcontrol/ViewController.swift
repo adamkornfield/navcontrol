@@ -22,6 +22,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var inEdit = 0
     var longPressGesture : UILongPressGestureRecognizer = UILongPressGestureRecognizer()
     
+    override func viewWillAppear(animated: Bool) {
+        getStockPrice(companies, companyTableView: companyTableView)
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         companyTableView.dataSource = self
@@ -33,7 +38,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let dataObject : DataStore = DataStore.sharedInstance
         companies = dataObject.getCompanies()
         
-        getStockPrice(companies)
+        
+        
     }
     
     @IBAction func editButtonPressed(sender: AnyObject) {
@@ -41,11 +47,24 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             companyTableView.setEditing(true, animated: true)
             editButton.title = "Done"
             inEdit = 1
+            companyTableView.reloadData()
+//            let range = NSMakeRange(0, self.companyTableView.numberOfSections)
+//            let sections = NSIndexSet(indexesInRange: range)
+//            self.companyTableView.reloadSections(sections, withRowAnimation: .None)
+            
         }
         else {
             companyTableView.setEditing(false, animated: true)
             editButton.title = "Edit"
             inEdit = 0
+            companyTableView.reloadData()
+//            let range = NSMakeRange(0, self.companyTableView.numberOfSections)
+//            let sections = NSIndexSet(indexesInRange: range)
+//            self.companyTableView.reloadSections(sections, withRowAnimation: .Fade)
+            
+            
+
+            
         }
     }
     
@@ -82,25 +101,42 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         cell.companyNameLabel.text = companies[indexPath.row].name
         cell.logoImageView.image = resizeImage(UIImage(named: companies[indexPath.row].image)!, newWidth: 100.0)
-        cell.stockSymbolLabel.text = companies[indexPath.row].stock
-        if companies[indexPath.row].stockPrice == 0.0 {
-            cell.stockPriceLabel.text = "Private"
+        
+        if companies[indexPath.row].stockPrice == "" {
+            cell.stockSymbolLabel.text = "Private"
+            cell.stockPriceLabel.text = ""
         }
         else {
+            cell.stockSymbolLabel.text = companies[indexPath.row].stock
             cell.stockPriceLabel.text = String(companies[indexPath.row].stockPrice)
         }
         
+        
+        if companyTableView.editing == true {
+            cell.leadingImageViewConstraint.constant = 40.0
+        }
+        else  {
+            cell.leadingImageViewConstraint.constant = 0.0
+        }
         longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.didLongPressGesture) )
         longPressGesture.minimumPressDuration = 0.5
+        cell.showsReorderControl = true
         cell.addGestureRecognizer(longPressGesture)
+        
         return cell
     }
     
     func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
+        return true
     }
     
+//    func tableView(tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+//        return true
+//    }
     
+//    func tableView(tableView: UITableView, indentationLevelForRowAtIndexPath indexPath: NSIndexPath) -> Int {
+//        return 1
+//    }
 
    
     
@@ -156,10 +192,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if inEdit == 0 {
             newCompany = sourceViewController.company
             companies += [newCompany]
+            getStockPrice(companies, companyTableView: companyTableView)
             let newPath = NSIndexPath(forItem: companies.count - 1, inSection: 0)
             companyTableView.insertRowsAtIndexPaths([newPath], withRowAnimation: .Bottom)
         }
         else {
+            getStockPrice(companies, companyTableView: companyTableView)
             companyTableView.editing = false
             editButton.title = "Edit"
             inEdit = 0
