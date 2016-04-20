@@ -15,16 +15,20 @@ class Company : NSObject {
     var image = ""
     var stock = ""
     var stockPrice = ""
+    var id : Int = 0
+    var position : Int = 0
     
-    init(inName : String, inProducts : [Product], inImage : String, inStock : String) {
+    init(inName : String, inProducts : [Product], inImage : String, inStock : String, inID : Int, inPosition : Int) {
         name = inName
         products = inProducts
         image = inImage
         stock = inStock
+        id = inID
+        position = inPosition
         
     }
     
     convenience override init() {
-        self.init(inName: "", inProducts: [], inImage: "", inStock: "")
+        self.init(inName: "", inProducts: [], inImage: "", inStock: "", inID: 0, inPosition: 0)
     }
 }

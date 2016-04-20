@@ -17,6 +17,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     var inEdit = 0
     var urlToSend : String = ""
     var newProduct : Product = Product()
+    let dataObject : DataStore = DataStore.sharedInstance
     
     
     override func viewDidLoad() {
@@ -46,19 +47,28 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         let itemToMove = companySelected.products[sourceIndexPath.row]
         companySelected.products.removeAtIndex(sourceIndexPath.row)
         companySelected.products.insert(itemToMove, atIndex: destinationIndexPath.row)
+        updateRowPositions()
 
     }
 
-    
+    func updateRowPositions() {
+        
+        for count in 0 ..< companySelected.products.count {
+            companySelected.products[count].position = count
+            dataObject.updateProduct(companySelected.products[count])
+        }
+    }
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.Delete
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-
-        companySelected.products.removeAtIndex(indexPath.row)
+        
+        dataObject.deleteProduct(companySelected, index: indexPath.row)
+        //companySelected.products.removeAtIndex(indexPath.row)
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        updateRowPositions()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -145,11 +155,15 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         newProduct = sourceViewController.newProduct
         
         if inEdit == 0 {
-            companySelected.products += [newProduct]
+            newProduct.companyID = companySelected.id
+            newProduct.position = companySelected.products.count
+            //companySelected.products += [newProduct]
+            dataObject.addProduct(newProduct, companySelected: companySelected)
             let newIndexPath = NSIndexPath(forItem: companySelected.products.count - 1, inSection: 0)
             productTableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
         }
         else {
+            dataObject.updateProduct(newProduct)
             inEdit = 0
             productTableView.editing = false
             editButton.title = "Edit"

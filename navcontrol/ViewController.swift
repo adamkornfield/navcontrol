@@ -17,13 +17,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     let textCellIdentifier = "reuseCell"
     var companySelected : Company = Company()
-    var companies : [Company] = []
+    
     var newCompany : Company = Company()
     var inEdit = 0
     var longPressGesture : UILongPressGestureRecognizer = UILongPressGestureRecognizer()
+    let dataObject : DataStore = DataStore.sharedInstance
     
     override func viewWillAppear(animated: Bool) {
-        getStockPrice(companies, companyTableView: companyTableView)
+        getStockPrice(dataObject.companies, companyTableView: companyTableView)
         
     }
     
@@ -35,12 +36,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         companyTableView.allowsSelectionDuringEditing = true
         
-        let dataObject : DataStore = DataStore.sharedInstance
-        companies = dataObject.getCompanies()
         
-        
+        //dataObject.companies = dataObject.companies
+     
         
     }
+    
+    
     
     @IBAction func editButtonPressed(sender: AnyObject) {
         if companyTableView.editing == false {
@@ -69,16 +71,31 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        let itemToMove = companies[sourceIndexPath.row]
-        companies.removeAtIndex(sourceIndexPath.row)
-        companies.insert(itemToMove, atIndex: destinationIndexPath.row)
+        let itemToMove = dataObject.companies[sourceIndexPath.row]
+        dataObject.companies.removeAtIndex(sourceIndexPath.row)
+        dataObject.companies.insert(itemToMove, atIndex: destinationIndexPath.row)
+        updateRowPositions()
+        
+
+    }
+    
+    func updateRowPositions() {
+        
+        for count in 0 ..< dataObject.companies.count {
+            dataObject.companies[count].position = count
+            dataObject.updateCompany(dataObject.companies[count])
+        }
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            companies.removeAtIndex(indexPath.row)
+            
+            dataObject.deleteCompany(dataObject.companies[indexPath.row], index: indexPath.row)
+            //dataObject.companies.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            updateRowPositions()
         }
+        
     }
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -90,25 +107,25 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return companies.count
+        return dataObject.companies.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath) as! CompanyTableViewCell
-        //cell.textLabel?.text = companies[indexPath.row].name
-        //cell.imageView?.image = resizeImage(UIImage(named: companies[indexPath.row].image)!, newWidth: 100.0)
+        //cell.textLabel?.text = dataObject.companies[indexPath.row].name
+        //cell.imageView?.image = resizeImage(UIImage(named: dataObject.companies[indexPath.row].image)!, newWidth: 100.0)
         cell.showsReorderControl = false
         
-        cell.companyNameLabel.text = companies[indexPath.row].name
-        cell.logoImageView.image = resizeImage(UIImage(named: companies[indexPath.row].image)!, newWidth: 100.0)
+        cell.companyNameLabel.text = dataObject.companies[indexPath.row].name
+        cell.logoImageView.image = resizeImage(UIImage(named: dataObject.companies[indexPath.row].image)!, newWidth: 100.0)
         
-        if companies[indexPath.row].stockPrice == "" {
+        if dataObject.companies[indexPath.row].stockPrice == "" {
             cell.stockSymbolLabel.text = "Private"
             cell.stockPriceLabel.text = ""
         }
         else {
-            cell.stockSymbolLabel.text = companies[indexPath.row].stock
-            cell.stockPriceLabel.text = String(companies[indexPath.row].stockPrice)
+            cell.stockSymbolLabel.text = dataObject.companies[indexPath.row].stock
+            cell.stockPriceLabel.text = String(dataObject.companies[indexPath.row].stockPrice)
         }
         
         
@@ -142,7 +159,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        companySelected = companies[indexPath.row]
+        companySelected = dataObject.companies[indexPath.row]
         if tableView.editing == false {
             performSegueWithIdentifier("productViewControllerSegue", sender:indexPath)
         }
@@ -156,7 +173,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if longPressGesture.state == .Began {
             let pressLocation = longPressGesture.locationInView(companyTableView)
             if let pressedIndexPath = companyTableView.indexPathForRowAtPoint(pressLocation) {
-                    companySelected = companies[pressedIndexPath.row]
+                    companySelected = dataObject.companies[pressedIndexPath.row]
                     inEdit = 1
                     performSegueWithIdentifier("addEditCompanySegue", sender:self)
             }
@@ -188,16 +205,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func unwindSave(sender: UIStoryboardSegue) {
         
         let sourceViewController = sender.sourceViewController as! AddEditCompany
+        newCompany = sourceViewController.company
         
         if inEdit == 0 {
-            newCompany = sourceViewController.company
-            companies += [newCompany]
-            getStockPrice(companies, companyTableView: companyTableView)
-            let newPath = NSIndexPath(forItem: companies.count - 1, inSection: 0)
+            newCompany.position = dataObject.companies.count
+            dataObject.addCompany(newCompany)
+
+            getStockPrice(dataObject.companies, companyTableView: companyTableView)
+            let newPath = NSIndexPath(forItem: dataObject.companies.count - 1, inSection: 0)
             companyTableView.insertRowsAtIndexPaths([newPath], withRowAnimation: .Bottom)
         }
         else {
-            getStockPrice(companies, companyTableView: companyTableView)
+            dataObject.updateCompany(newCompany)
+            getStockPrice(dataObject.companies, companyTableView: companyTableView)
             companyTableView.editing = false
             editButton.title = "Edit"
             inEdit = 0

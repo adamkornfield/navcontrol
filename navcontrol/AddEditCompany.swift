@@ -64,7 +64,7 @@ class AddEditCompany : UIViewController, UITextFieldDelegate {
         if sender as! UIBarButtonItem == saveButton {
             
             if editExisting == 0 {
-                company = Company(inName: coNameTextField.text!, inProducts: [], inImage: logoTextfield.text!, inStock: stockSymbolTextField.text!)
+                company = Company(inName: coNameTextField.text!, inProducts: [], inImage: logoTextfield.text!, inStock: stockSymbolTextField.text!, inID: 0, inPosition: 0)
             }
             else {
                 company.name = coNameTextField.text!

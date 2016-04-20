@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		575711341CBEF75000401FC8 /* BrandonGrotesque-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 575711331CBEF74C00401FC8 /* BrandonGrotesque-Regular.otf */; };
+		5760BAA01CC1467800A69976 /* navcontrol.db in Resources */ = {isa = PBXBuildFile; fileRef = 5760BA9F1CC1467800A69976 /* navcontrol.db */; };
+		5760BAA21CC1503700A69976 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5760BAA11CC1503700A69976 /* libsqlite3.0.tbd */; };
 		57A4E76A1CBC2FE600220204 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7691CBC2FE600220204 /* apple.png */; };
 		57A4E76E1CBC408B00220204 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76D1CBC408B00220204 /* Company.swift */; };
 		57A4E7701CBC40BC00220204 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76F1CBC40BC00220204 /* Product.swift */; };
@@ -48,7 +50,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		575711331CBEF74C00401FC8 /* BrandonGrotesque-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BrandonGrotesque-Regular.otf"; sourceTree = "<group>"; };
+		575711331CBEF74C00401FC8 /* BrandonGrotesque-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "BrandonGrotesque-Regular.otf"; path = "navcontrol/BrandonGrotesque-Regular.otf"; sourceTree = "<group>"; };
+		5760BA9F1CC1467800A69976 /* navcontrol.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = navcontrol.db; sourceTree = "<group>"; };
+		5760BAA11CC1503700A69976 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		5760BAA51CC162D800A69976 /* bridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bridgingHeader.h; path = navcontrol/bridgingHeader.h; sourceTree = "<group>"; };
 		57A4E7691CBC2FE600220204 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
 		57A4E76D1CBC408B00220204 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		57A4E76F1CBC40BC00220204 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -67,9 +72,9 @@
 		57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57F2E20D1CB56CE800B344B0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		57F2E2101CB56CE800B344B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		57F2E2121CB56CE800B344B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		57F2E2121CB56CE800B344B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = navcontrol/Assets.xcassets; sourceTree = "<group>"; };
 		57F2E2151CB56CE800B344B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		57F2E2171CB56CE800B344B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		57F2E2171CB56CE800B344B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = navcontrol/Info.plist; sourceTree = "<group>"; };
 		57F2E2211CB5ADCC00B344B0 /* ProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductViewController.swift; sourceTree = "<group>"; };
 		57F2E2261CB6E43900B344B0 /* warbyparker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = warbyparker.png; sourceTree = "<group>"; };
 		57F2E2271CB6E43900B344B0 /* stickermule.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stickermule.png; sourceTree = "<group>"; };
@@ -95,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5760BAA21CC1503700A69976 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,8 +121,7 @@
 		57F2E1FF1CB56CE800B344B0 = {
 			isa = PBXGroup;
 			children = (
-				57AFF7551CB8149A00A48158 /* Default-568h@2x.png */,
-				57F2E2231CB6E42A00B344B0 /* Images */,
+				57F2E2231CB6E42A00B344B0 /* Resources */,
 				57F2E20A1CB56CE800B344B0 /* navcontrol */,
 				57F2E2091CB56CE800B344B0 /* Products */,
 			);
@@ -146,24 +151,28 @@
 				57F2E2541CB6F1E300B344B0 /* WebViewController.swift */,
 				57F2E20F1CB56CE800B344B0 /* Main.storyboard */,
 				57A4E7861CBED79C00220204 /* CompanyTableViewCell.swift */,
-				57F2E2121CB56CE800B344B0 /* Assets.xcassets */,
 				57F2E2141CB56CE800B344B0 /* LaunchScreen.storyboard */,
-				575711331CBEF74C00401FC8 /* BrandonGrotesque-Regular.otf */,
-				57F2E2171CB56CE800B344B0 /* Info.plist */,
 			);
 			path = navcontrol;
 			sourceTree = "<group>";
 		};
-		57F2E2231CB6E42A00B344B0 /* Images */ = {
+		57F2E2231CB6E42A00B344B0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5760BAA11CC1503700A69976 /* libsqlite3.0.tbd */,
+				57F2E2121CB56CE800B344B0 /* Assets.xcassets */,
+				57F2E2171CB56CE800B344B0 /* Info.plist */,
+				575711331CBEF74C00401FC8 /* BrandonGrotesque-Regular.otf */,
+				5760BAA51CC162D800A69976 /* bridgingHeader.h */,
+				57AFF7551CB8149A00A48158 /* Default-568h@2x.png */,
+				5760BA9F1CC1467800A69976 /* navcontrol.db */,
 				57A4E7751CBD856B00220204 /* Starbucks */,
 				57F2E24D1CB6EA4800B344B0 /* Sticker Mule Products */,
 				57F2E2301CB6E7F000B344B0 /* Apple Products */,
 				57F2E2391CB6E8E500B344B0 /* Samsung Products */,
 				57F2E2401CB6E99100B344B0 /* Warby Parker Products */,
 			);
-			name = Images;
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		57F2E2301CB6E7F000B344B0 /* Apple Products */ = {
@@ -291,6 +300,7 @@
 				57F2E2461CB6E99B00B344B0 /* eaton.png in Resources */,
 				57F2E24B1CB6E9E700B344B0 /* galaxynote.png in Resources */,
 				57F2E2521CB6EA5400B344B0 /* rectangle.png in Resources */,
+				5760BAA01CC1467800A69976 /* navcontrol.db in Resources */,
 				57A4E77B1CBD858A00220204 /* iced.png in Resources */,
 				57F2E24A1CB6E9E700B344B0 /* galaxy.png in Resources */,
 				57F2E2111CB56CE800B344B0 /* Main.storyboard in Resources */,
@@ -434,6 +444,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ak.navcontrol;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = navcontrol/bridgingHeader.h;
 			};
 			name = Debug;
 		};
@@ -446,6 +457,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ak.navcontrol;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = navcontrol/bridgingHeader.h;
 			};
 			name = Release;
 		};

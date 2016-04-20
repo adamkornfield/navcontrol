@@ -30,6 +30,9 @@ func getStockPrice(companies : [Company], companyTableView : UITableView) {
     
     let url = "http://finance.yahoo.com/d/quotes.csv?s=" + allCompanyStocks + "&f=l1"
     
+    
+    //print(url)
+    
     let session = NSURLSession.sharedSession()
 
     let urlPath = NSURL(string: url)

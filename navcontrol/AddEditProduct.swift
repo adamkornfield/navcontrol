@@ -66,7 +66,7 @@ class AddEditProduct : UIViewController, UITextFieldDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if sender as! UIBarButtonItem == saveButton {
             if inEditing == 0 {
-                newProduct = Product(inName: productNameTextField.text!, inURL: webpageURLTextField.text! , inImage: imageNameTextField.text!)
+                newProduct = Product(inName: productNameTextField.text!, inURL: webpageURLTextField.text! , inImage: imageNameTextField.text!, inCompanyID: 0, inProductID: 0, inPosition: 0)
             }
             else {
                 newProduct.name = productNameTextField.text!
