@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="BrandonGrotesque-Regular.otf">
@@ -118,15 +119,23 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Companies" id="HdB-qs-shG">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="D5x-aH-x3G">
-                            <connections>
-                                <action selector="editButtonPressed:" destination="BYZ-38-t0r" id="K31-sh-sH9"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Edit" id="D5x-aH-x3G">
+                                <connections>
+                                    <action selector="editButtonPressed:" destination="BYZ-38-t0r" id="K31-sh-sH9"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="undo" id="lXo-aI-Zph">
+                                <connections>
+                                    <action selector="undoButtonPressed:" destination="BYZ-38-t0r" id="ddl-cA-6mZ"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="companyTableView" destination="Tpb-v8-P17" id="M6p-mM-ohd"/>
                         <outlet property="editButton" destination="D5x-aH-x3G" id="S5B-8R-AwO"/>
+                        <outlet property="undoButton" destination="lXo-aI-Zph" id="Jhu-wt-i1N"/>
                         <segue destination="CVm-ri-jVJ" kind="show" identifier="productViewControllerSegue" id="JWQ-DN-rMS"/>
                     </connections>
                 </viewController>
@@ -271,15 +280,23 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="yVz-j9-SPY">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="Mtc-dK-WVT">
-                            <connections>
-                                <action selector="editButtonPressed:" destination="CVm-ri-jVJ" id="fz2-Tb-uvn"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Edit" id="Mtc-dK-WVT">
+                                <connections>
+                                    <action selector="editButtonPressed:" destination="CVm-ri-jVJ" id="fz2-Tb-uvn"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="undo" id="m1V-mc-blg">
+                                <connections>
+                                    <action selector="undoButtonPressed:" destination="CVm-ri-jVJ" id="4uH-Aj-ODa"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="editButton" destination="Mtc-dK-WVT" id="T8K-nS-B3G"/>
                         <outlet property="productTableView" destination="2hj-kl-oBj" id="w6h-VQ-PEr"/>
+                        <outlet property="undoButton" destination="m1V-mc-blg" id="2tG-rt-y40"/>
                         <segue destination="ifo-3g-Kve" kind="show" identifier="webViewSegue" id="0P8-KE-6sE"/>
                     </connections>
                 </viewController>

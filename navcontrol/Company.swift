@@ -8,13 +8,15 @@
 
 import UIKit
 
+
+
 class Company : NSObject {
     
     var name : String = ""
     var products : [Product] = []
-    var image = ""
-    var stock = ""
-    var stockPrice = ""
+    var image : String = ""
+    var stock : String = ""
+    var stockPrice : String = ""
     var id : Int = 0
     var position : Int = 0
     

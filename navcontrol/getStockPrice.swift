@@ -15,6 +15,7 @@ func getStockPrice(companies : [Company], companyTableView : UITableView) {
     var positionsWithStocks : [Int] = []
     var priceArray : [String] = []
     
+    
     for company in companies {
         if company.stock != "" {
             allCompanyStocks += (company.stock + "+")

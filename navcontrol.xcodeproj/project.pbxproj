@@ -10,6 +10,10 @@
 		575711341CBEF75000401FC8 /* BrandonGrotesque-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 575711331CBEF74C00401FC8 /* BrandonGrotesque-Regular.otf */; };
 		5760BAA01CC1467800A69976 /* navcontrol.db in Resources */ = {isa = PBXBuildFile; fileRef = 5760BA9F1CC1467800A69976 /* navcontrol.db */; };
 		5760BAA21CC1503700A69976 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5760BAA11CC1503700A69976 /* libsqlite3.0.tbd */; };
+		57A126D21CCEA0BC00C75D20 /* coredata.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 57A126D01CCEA0BC00C75D20 /* coredata.xcdatamodeld */; };
+		57A126D41CCEA4AF00C75D20 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57A126D31CCEA4AF00C75D20 /* CoreData.framework */; };
+		57A126DE1CCEBC5100C75D20 /* CompanyManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A126DD1CCEBC5100C75D20 /* CompanyManagedObject.swift */; };
+		57A126E01CCEBCB000C75D20 /* ProductManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A126DF1CCEBCB000C75D20 /* ProductManagedObject.swift */; };
 		57A4E76A1CBC2FE600220204 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7691CBC2FE600220204 /* apple.png */; };
 		57A4E76E1CBC408B00220204 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76D1CBC408B00220204 /* Company.swift */; };
 		57A4E7701CBC40BC00220204 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76F1CBC40BC00220204 /* Product.swift */; };
@@ -54,6 +58,10 @@
 		5760BA9F1CC1467800A69976 /* navcontrol.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = navcontrol.db; sourceTree = "<group>"; };
 		5760BAA11CC1503700A69976 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		5760BAA51CC162D800A69976 /* bridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bridgingHeader.h; path = navcontrol/bridgingHeader.h; sourceTree = "<group>"; };
+		57A126D11CCEA0BC00C75D20 /* coredata.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = coredata.xcdatamodel; sourceTree = "<group>"; };
+		57A126D31CCEA4AF00C75D20 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		57A126DD1CCEBC5100C75D20 /* CompanyManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyManagedObject.swift; sourceTree = "<group>"; };
+		57A126DF1CCEBCB000C75D20 /* ProductManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductManagedObject.swift; sourceTree = "<group>"; };
 		57A4E7691CBC2FE600220204 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
 		57A4E76D1CBC408B00220204 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		57A4E76F1CBC40BC00220204 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -100,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57A126D41CCEA4AF00C75D20 /* CoreData.framework in Frameworks */,
 				5760BAA21CC1503700A69976 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,6 +130,7 @@
 		57F2E1FF1CB56CE800B344B0 = {
 			isa = PBXGroup;
 			children = (
+				57A126D31CCEA4AF00C75D20 /* CoreData.framework */,
 				57F2E2231CB6E42A00B344B0 /* Resources */,
 				57F2E20A1CB56CE800B344B0 /* navcontrol */,
 				57F2E2091CB56CE800B344B0 /* Products */,
@@ -139,14 +149,17 @@
 			isa = PBXGroup;
 			children = (
 				57A4E76D1CBC408B00220204 /* Company.swift */,
+				57A126DD1CCEBC5100C75D20 /* CompanyManagedObject.swift */,
 				57A4E76F1CBC40BC00220204 /* Product.swift */,
+				57A126DF1CCEBCB000C75D20 /* ProductManagedObject.swift */,
 				57A4E7711CBD2D2D00220204 /* DataStore.swift */,
 				57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */,
 				57F2E20D1CB56CE800B344B0 /* ViewController.swift */,
 				57A4E7731CBD619B00220204 /* AddEditCompany.swift */,
-				57A4E7881CBEE03A00220204 /* getStockPrice.swift */,
 				57F2E2211CB5ADCC00B344B0 /* ProductViewController.swift */,
 				57A4E7821CBD87E800220204 /* AddEditProduct.swift */,
+				57A126D01CCEA0BC00C75D20 /* coredata.xcdatamodeld */,
+				57A4E7881CBEE03A00220204 /* getStockPrice.swift */,
 				57A4E7841CBE943A00220204 /* resizeImage.swift */,
 				57F2E2541CB6F1E300B344B0 /* WebViewController.swift */,
 				57F2E20F1CB56CE800B344B0 /* Main.storyboard */,
@@ -317,6 +330,7 @@
 			files = (
 				57A4E7721CBD2D2D00220204 /* DataStore.swift in Sources */,
 				57F2E20E1CB56CE800B344B0 /* ViewController.swift in Sources */,
+				57A126E01CCEBCB000C75D20 /* ProductManagedObject.swift in Sources */,
 				57F2E20C1CB56CE800B344B0 /* AppDelegate.swift in Sources */,
 				57A4E7741CBD619B00220204 /* AddEditCompany.swift in Sources */,
 				57A4E7871CBED79C00220204 /* CompanyTableViewCell.swift in Sources */,
@@ -325,8 +339,10 @@
 				57F2E2221CB5ADCC00B344B0 /* ProductViewController.swift in Sources */,
 				57A4E7831CBD87E800220204 /* AddEditProduct.swift in Sources */,
 				57F2E2551CB6F1E300B344B0 /* WebViewController.swift in Sources */,
+				57A126DE1CCEBC5100C75D20 /* CompanyManagedObject.swift in Sources */,
 				57A4E76E1CBC408B00220204 /* Company.swift in Sources */,
 				57A4E7851CBE943A00220204 /* resizeImage.swift in Sources */,
+				57A126D21CCEA0BC00C75D20 /* coredata.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,6 +499,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		57A126D01CCEA0BC00C75D20 /* coredata.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				57A126D11CCEA0BC00C75D20 /* coredata.xcdatamodel */,
+			);
+			currentVersion = 57A126D11CCEA0BC00C75D20 /* coredata.xcdatamodel */;
+			path = coredata.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 57F2E2001CB56CE800B344B0 /* Project object */;
 }

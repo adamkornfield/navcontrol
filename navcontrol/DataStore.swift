@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class DataStore : NSObject  {
     
@@ -17,206 +18,351 @@ class DataStore : NSObject  {
     var productHighestID = 0
     var companyHighestID = 0
     
+    var managedContext = NSManagedObjectContext.init(concurrencyType: .MainQueueConcurrencyType)
+    
     private override init() {
         super.init()
-        openDB()
-        openDBCompanies()
-        openDBProducts()
-        sortProducts()
-        sortCompanies()
-        addProductsToCompanies()
-    }
-    
-    func openDB() {
-        let fileManager = NSFileManager.defaultManager()
-        let directory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        fileURL = directory[0] + "/navcontrol.db"
-        let pathToBundledDB = NSBundle.mainBundle().pathForResource("navcontrol", ofType: "db")
         
-        if (fileManager.fileExistsAtPath(fileURL)) {
+        
+        if checkDoesCoreDataExists() == false
+        {
+            loadHardCodedValues()
+            addProductsToCompanies()
         }
         else {
-            try! fileManager.copyItemAtPath(pathToBundledDB!, toPath: fileURL)
+            reloadCompaniesAndProducts()
+        }
+        
+        
+    }
+    
+    
+    
+    func reloadCompaniesAndProducts() {
+        loadExistingCompanies()
+        loadExistingProducts()
+        addProductsToCompanies()
+        
+    }
+    
+    func undoCompaniesAndProducts() {
+        managedContext.undo()
+        companies.removeAll()
+        reloadCompaniesAndProducts()
+    }
+    
+    func undoProducts() {
+        managedContext.undo()
+        
+        for company in companies {
+            company.products.removeAll()
+        }
+        loadExistingProducts()
+        addProductsToCompanies()
+
+    }
+    
+    func checkDoesCoreDataExists() -> Bool {
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        managedContext = appDelegate.managedObjectContext
+        managedContext.undoManager = NSUndoManager()
+        
+        
+        let fetchRequest = NSFetchRequest(entityName: "Company")
+        let sortDescriptors = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptors]
+        
+        var results : [AnyObject] = []
+        do {
+            results = try managedContext.executeFetchRequest(fetchRequest)
+        }
+        catch {
+            print("Error fetching")
+        }
+
+        if results.count > 0 {
+            return true
+        }
+        else {
+            return false
+        }
+
+    }
+    
+    func loadExistingCompanies() {
+        
+        let fetchRequest = NSFetchRequest(entityName: "Company")
+        let sortDescriptors = NSSortDescriptor(key: "position", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptors]
+        
+        var results : [AnyObject] = []
+        do {
+            results = try managedContext.executeFetchRequest(fetchRequest)
+        }
+        catch {
+            print("Error fetching")
+        }
+        
+        for result in results  {
+            //print(result.valueForKey("name")!)
+            companies += [Company(inName: result.valueForKey("name") as! String, inProducts: [], inImage: result.valueForKey("image") as! String, inStock: result.valueForKey("stock") as! String, inID: result.valueForKey("id") as! Int, inPosition: result.valueForKey("position") as! Int)]
+            
+            if result.valueForKey("id") as! Int > companyHighestID {
+                companyHighestID = result.valueForKey("id") as! Int
+            }
+
+            
         }
     }
     
-    func openDBCompanies() {
-        var db: COpaquePointer = nil
-        if sqlite3_open(fileURL, &db) == SQLITE_OK {
-            let querySQL = "SELECT * FROM Company"
-            var statement: COpaquePointer = nil
-
-            if sqlite3_prepare(db, querySQL, -1, &statement, nil) == SQLITE_OK {
-                while sqlite3_step(statement) == SQLITE_ROW {
-                    let id = sqlite3_column_int64(statement, 0)
-                    //print("id = \(id); ", terminator: "")
+    func loadExistingProducts() {
+        let fetchRequest = NSFetchRequest(entityName: "Product")
+        let sortDescriptors = NSSortDescriptor(key: "position", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptors]
+        
+        var results : [AnyObject] = []
+        do {
+            results = try managedContext.executeFetchRequest(fetchRequest)
+        }
+        catch {
+            print("Error fetching")
+        }
+        
+        for result in results  {
+            //print(result.valueForKey("name")!)
+            products += [Product(inName: result.valueForKey("name") as! String, inURL: result.valueForKey("url") as! String, inImage: result.valueForKey("image") as! String, inCompanyID: result.valueForKey("companyID") as! Int, inProductID: result.valueForKey("productID") as! Int, inPosition: result.valueForKey("position") as! Int)]
             
-                    var nameString = ""
-                    var imageString = ""
-                    var stockString = ""
-
-                    let name = sqlite3_column_text(statement, 1)
-                    if name != nil {
-                        nameString = String.fromCString(UnsafePointer<Int8>(name))!
-                        //print("name = \(nameString)")
-                    } else {
-                        print("name not found")
-                    }
-                    
-                    let image = sqlite3_column_text(statement, 2)
-                    if image != nil {
-                        imageString = String.fromCString(UnsafePointer<Int8>(image))!
-                        //print("image = \(imageString)")
-                    } else {
-                        print("image not found")
-                    }
-                    
-                    let stock = sqlite3_column_text(statement, 3)
-                    if stock != nil {
-                        stockString = String.fromCString(UnsafePointer<Int8>(stock))!
-                        //print("stock = \(stockString)")
-                    } else {
-                        print("stock not found")
-                    }
-
-                    let position = sqlite3_column_int64(statement, 5)
-                    
-                    if Int(id) > companyHighestID {
-                        companyHighestID = Int(id)
-                    }
-                    let newCompany = Company(inName: nameString, inProducts: [], inImage: imageString, inStock: stockString, inID: Int(id), inPosition: Int(position) )
-                    companies += [newCompany]
-                }
-            }
-            else {
-                let errmsg = String.fromCString(sqlite3_errmsg(db))
-                print("error preparing select: \(errmsg!)")
+            if result.valueForKey("productID") as! Int > productHighestID {
+                productHighestID = result.valueForKey("productID") as! Int
             }
         }
-        else {
-            print("error opening database")
-        }
+
+        
+        
+        
     }
     
-    func openDBProducts() {
-
-        var db: COpaquePointer = nil
-        if sqlite3_open(fileURL, &db) == SQLITE_OK {
-            let querySQL = "SELECT * FROM Product"
-            var statement: COpaquePointer = nil
-            
-            
-            if sqlite3_prepare(db, querySQL, -1, &statement, nil) == SQLITE_OK {
-                
-                while sqlite3_step(statement) == SQLITE_ROW {
-                    let productID = sqlite3_column_int64(statement, 0)
-                    let companyID = sqlite3_column_int64(statement, 1)
-                    //print("id = \(id); ", terminator: "")
-                    
-                    var nameString = ""
-                    var imageString = ""
-                    var urlString = ""
-                    
-
-                    let name = sqlite3_column_text(statement, 2)
-                    if name != nil {
-                        nameString = String.fromCString(UnsafePointer<Int8>(name))!
-                        //print("name = \(nameString)")
-                    } else {
-                        print("name not found")
-                    }
-                    
-                    let image = sqlite3_column_text(statement, 3)
-                    if image != nil {
-                        imageString = String.fromCString(UnsafePointer<Int8>(image))!
-                        //print("image = \(imageString)")
-                    } else {
-                        print("image not found")
-                    }
-                    
-                    let url = sqlite3_column_text(statement, 4)
-                    if url != nil {
-                        urlString = String.fromCString(UnsafePointer<Int8>(url))!
-                        //print("stock = \(stockString)")
-                    } else {
-                        print("stock not found")
-                    }
-                    
-                    let position = sqlite3_column_int64(statement, 5)
-                    
-                    let newProduct = Product(inName: nameString, inURL: urlString, inImage: imageString, inCompanyID: Int(companyID), inProductID: Int(productID), inPosition: Int(position))
-                    
-                    if Int(productID) > productHighestID {
-                        productHighestID = Int(productID)
-                    }
-                    products += [newProduct]
-                }
-                
-            }
-            else {
-                let errmsg = String.fromCString(sqlite3_errmsg(db))
-                print("error preparing select: \(errmsg!)")
-            }
+    func loadHardCodedValues() {
+        let appleEntity = NSEntityDescription.insertNewObjectForEntityForName("Company", inManagedObjectContext: managedContext)
+        appleEntity.setValue("Apple", forKey: "name")
+        appleEntity.setValue("apple.png", forKey: "image")
+        appleEntity.setValue("AAPL", forKey: "stock")
+        appleEntity.setValue(0 , forKey: "position")
+        appleEntity.setValue(0, forKey: "id")
+        
+        let samsungEntity = NSEntityDescription.insertNewObjectForEntityForName("Company", inManagedObjectContext: managedContext)
+        samsungEntity.setValue("Samsung", forKey: "name")
+        samsungEntity.setValue("samsung.png", forKey: "image")
+        samsungEntity.setValue("005930.KS", forKey: "stock")
+        samsungEntity.setValue(1, forKey: "position")
+        samsungEntity.setValue(1, forKey: "id")
+        
+        let warbyParkerEntity = NSEntityDescription.insertNewObjectForEntityForName("Company", inManagedObjectContext: managedContext)
+        warbyParkerEntity.setValue("Warby Parker", forKey: "name")
+        warbyParkerEntity.setValue("warbyparker.png", forKey: "image")
+        warbyParkerEntity.setValue("", forKey: "stock")
+        warbyParkerEntity.setValue(2 , forKey: "position")
+        warbyParkerEntity.setValue(2, forKey: "id")
+        
+        let stickerMuleEntity = NSEntityDescription.insertNewObjectForEntityForName("Company", inManagedObjectContext: managedContext)
+        stickerMuleEntity.setValue("Sticker Mule", forKey: "name")
+        stickerMuleEntity.setValue("stickermule.png", forKey: "image")
+        stickerMuleEntity.setValue("", forKey: "stock")
+        stickerMuleEntity.setValue(3 , forKey: "position")
+        stickerMuleEntity.setValue(3, forKey: "id")
+        
+        let companyResults = [appleEntity, samsungEntity,warbyParkerEntity,stickerMuleEntity]
+        
+        for result in companyResults  {
+            companies += [Company(inName: result.valueForKey("name") as! String, inProducts: [], inImage: result.valueForKey("image") as! String, inStock: result.valueForKey("stock") as! String, inID: result.valueForKey("id") as! Int, inPosition: result.valueForKey("position") as! Int)]
         }
-        else {
-            print("error opening database")
+        
+        //Apple products
+        let ipadEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        ipadEntity.setValue(0, forKey: "companyID")
+        ipadEntity.setValue(0, forKey: "productID")
+        ipadEntity.setValue("iPad", forKey: "name")
+        ipadEntity.setValue("ipad.png", forKey: "image")
+        ipadEntity.setValue("http://www.apple.com/ipad/", forKey: "url")
+        ipadEntity.setValue(0, forKey: "position")
+        
+        
+        let iphoneEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        iphoneEntity.setValue(0, forKey: "companyID")
+        iphoneEntity.setValue(1, forKey: "productID")
+        iphoneEntity.setValue("iPhone", forKey: "name")
+        iphoneEntity.setValue("iphone.png", forKey: "image")
+        iphoneEntity.setValue("http://www.apple.com/iphone/", forKey: "url")
+        iphoneEntity.setValue(1, forKey: "position")
+        
+        let macbookairEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        macbookairEntity.setValue(0, forKey: "companyID")
+        macbookairEntity.setValue(2, forKey: "productID")
+        macbookairEntity.setValue("MacBook Air", forKey: "name")
+        macbookairEntity.setValue("macbookair.png", forKey: "image")
+        macbookairEntity.setValue("http://www.apple.com/macbook-air/", forKey: "url")
+        macbookairEntity.setValue(2, forKey: "position")
+        
+        let applewatchEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        applewatchEntity.setValue(0, forKey: "companyID")
+        applewatchEntity.setValue(3, forKey: "productID")
+        applewatchEntity.setValue("Apple Watch", forKey: "name")
+        applewatchEntity.setValue("applewatch.png", forKey: "image")
+        applewatchEntity.setValue("http://www.apple.com/watch/", forKey: "url")
+        applewatchEntity.setValue(3, forKey: "position")
+        
+        //Samsung Products
+        let galaxyEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        galaxyEntity.setValue(1, forKey: "companyID")
+        galaxyEntity.setValue(4, forKey: "productID")
+        galaxyEntity.setValue("Galaxy", forKey: "name")
+        galaxyEntity.setValue("galaxy.png", forKey: "image")
+        galaxyEntity.setValue("https://www.samsung.com/us/mobile/cell-phones/SM-G935AZDAATT", forKey: "url")
+        galaxyEntity.setValue(0, forKey: "position")
+        
+        
+        let galaxyNoteEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        galaxyNoteEntity.setValue(1, forKey: "companyID")
+        galaxyNoteEntity.setValue(5, forKey: "productID")
+        galaxyNoteEntity.setValue("Galaxy Note", forKey: "name")
+        galaxyNoteEntity.setValue("galaxynote.png", forKey: "image")
+        galaxyNoteEntity.setValue("http://www.samsung.com/us/mobile/cell-phones/SM-N920AZKAATT", forKey: "url")
+        galaxyNoteEntity.setValue(1, forKey: "position")
+        
+        let gearEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        gearEntity.setValue(1, forKey: "companyID")
+        gearEntity.setValue(6, forKey: "productID")
+        gearEntity.setValue("Gear", forKey: "name")
+        gearEntity.setValue("gear.png", forKey: "image")
+        gearEntity.setValue("http://www.samsung.com/us/mobile/wearable-tech/SM-R7200ZWAXAR", forKey: "url")
+        gearEntity.setValue(2, forKey: "position")
+        
+        //Warby Parker Products
+        let henryEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        henryEntity.setValue(2, forKey: "companyID")
+        henryEntity.setValue(7, forKey: "productID")
+        henryEntity.setValue("Henry", forKey: "name")
+        henryEntity.setValue("henry.png", forKey: "image")
+        henryEntity.setValue("https://www.warbyparker.com/eyeglasses/men/henry/port-blue", forKey: "url")
+        henryEntity.setValue(0, forKey: "position")
+        
+        
+        let craneEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        craneEntity.setValue(2, forKey: "companyID")
+        craneEntity.setValue(8, forKey: "productID")
+        craneEntity.setValue("Crane", forKey: "name")
+        craneEntity.setValue("crane.png", forKey: "image")
+        craneEntity.setValue("https://www.warbyparker.com/eyeglasses/men/crane/atlantic-blue", forKey: "url")
+        craneEntity.setValue(1, forKey: "position")
+        
+        let eatonEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        eatonEntity.setValue(2, forKey: "companyID")
+        eatonEntity.setValue(9, forKey: "productID")
+        eatonEntity.setValue("Eaton", forKey: "name")
+        eatonEntity.setValue("eaton.png", forKey: "image")
+        eatonEntity.setValue("https://www.warbyparker.com/eyeglasses/men/eaton/tree-swallow-fade", forKey: "url")
+        eatonEntity.setValue(2, forKey: "position")
+        
+        //Sticker Mule Products
+        let diecutEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        diecutEntity.setValue(3, forKey: "companyID")
+        diecutEntity.setValue(10, forKey: "productID")
+        diecutEntity.setValue("Die Cut", forKey: "name")
+        diecutEntity.setValue("diecut.png", forKey: "image")
+        diecutEntity.setValue("https://www.stickermule.com/products/die-cut-stickers", forKey: "url")
+        diecutEntity.setValue(0, forKey: "position")
+        
+        let rectangleEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        rectangleEntity.setValue(3, forKey: "companyID")
+        rectangleEntity.setValue(11, forKey: "productID")
+        rectangleEntity.setValue("Rectangle", forKey: "name")
+        rectangleEntity.setValue("rectangle.png", forKey: "image")
+        rectangleEntity.setValue("https://www.stickermule.com/products/rectangle-stickers", forKey: "url")
+        rectangleEntity.setValue(1, forKey: "position")
+        
+        let circleEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        circleEntity.setValue(3, forKey: "companyID")
+        circleEntity.setValue(12, forKey: "productID")
+        circleEntity.setValue("Circle", forKey: "name")
+        circleEntity.setValue("circle.png", forKey: "image")
+        circleEntity.setValue("https://www.stickermule.com/products/circle-stickers", forKey: "url")
+        circleEntity.setValue(2, forKey: "position")
+        
+        let productResults = [ipadEntity, iphoneEntity,macbookairEntity,applewatchEntity, galaxyEntity, galaxyNoteEntity, gearEntity,henryEntity,craneEntity,eatonEntity,diecutEntity,rectangleEntity,circleEntity]
+        
+        for result in productResults  {
+            products += [Product(inName: result.valueForKey("name") as! String, inURL: result.valueForKey("url") as! String, inImage: result.valueForKey("image") as! String, inCompanyID: result.valueForKey("companyID") as! Int, inProductID: result.valueForKey("productID") as! Int, inPosition: result.valueForKey("position") as! Int)]
         }
+        
+        do {
+            try managedContext.save()
+        }
+        catch {
+            print("There is error saving")
+        }
+        
+        
     }
+    
+    
+
     
     
     
     func addProduct(newProduct : Product, companySelected : Company) {
-        
-        companySelected.products += [newProduct]
-        
-        var db: COpaquePointer = nil
-        var error: UnsafeMutablePointer<Int8> = nil
         productHighestID += 1
         newProduct.productID = productHighestID
-        if sqlite3_open(fileURL, &db) == SQLITE_OK {
-            let insertSQL = "INSERT INTO Product VALUES(\(newProduct.productID),\(newProduct.companyID),\"\(newProduct.name)\",\"\(newProduct.image)\",\"\(newProduct.url)\",\(newProduct.position));"
-            
-            //print(insertSQL)
-            
-            if sqlite3_exec(db, insertSQL, nil, nil, &error) == SQLITE_OK {
-
-                //print("Added to Products table")
-            }
-            else {
-                let errmsg = String.fromCString(sqlite3_errmsg(db))
-                print("error preparing select: \(errmsg!)")
-            }
-            sqlite3_close(db)
+        companySelected.products += [newProduct]
+        let newEntity = NSEntityDescription.insertNewObjectForEntityForName("Product", inManagedObjectContext: managedContext)
+        newEntity.setValue(newProduct.companyID, forKey: "companyID")
+        newEntity.setValue(newProduct.productID, forKey: "productID")
+        newEntity.setValue(newProduct.name, forKey: "name")
+        newEntity.setValue(newProduct.image, forKey: "image")
+        newEntity.setValue(newProduct.url, forKey: "url")
+        newEntity.setValue(newProduct.position, forKey: "position")
+        
+        do {
+            try managedContext.save()
         }
-        else {
-            print("error opening database")
+        catch {
+            print("Error saving")
         }
+        
     }
     
+    
+    
+    
     func updateProduct(updateProduct : Product) {
+        let fetchRequest = NSFetchRequest(entityName: "Product")
+        let predicate = NSPredicate(format: "productID == %lu", updateProduct.productID)
+        fetchRequest.predicate = predicate
         
-        
-        var db: COpaquePointer = nil
-        var error: UnsafeMutablePointer<Int8> = nil
-        
-        if sqlite3_open(fileURL, &db) == SQLITE_OK {
-            let updateSQL = "UPDATE Product SET company_id=\(updateProduct.companyID), name=\"\(updateProduct.name)\", image=\"\(updateProduct.image)\", url=\"\(updateProduct.url)\", position=\(updateProduct.position) WHERE product_id=\(updateProduct.productID);"
-            
-            //print(updateSQL)
-            
-            if sqlite3_exec(db, updateSQL, nil, nil, &error) == SQLITE_OK {
-                
-                //print("Updated product in table")
-            }
-            else {
-                let errmsg = String.fromCString(sqlite3_errmsg(db))
-                print("error preparing update: \(errmsg!)")
-            }
-            sqlite3_close(db)
+        var results : [AnyObject] = []
+        do {
+            results = try managedContext.executeFetchRequest(fetchRequest)
         }
-        else {
-            print("error opening database")
+        catch {
+            print("Error executing fetch request")
         }
+        
+        results[0].setValue(updateProduct.companyID, forKey: "companyID")
+        results[0].setValue(updateProduct.productID, forKey: "productID")
+        results[0].setValue(updateProduct.name, forKey: "name")
+        results[0].setValue(updateProduct.image, forKey: "image")
+        results[0].setValue(updateProduct.url, forKey: "url")
+        results[0].setValue(updateProduct.position, forKey: "position")
+        
+        do {
+            try managedContext.save()
+        }
+        catch {
+            print("Couldn't update product")
+        }
+        
+        
+        
     }
 
     
@@ -225,23 +371,21 @@ class DataStore : NSObject  {
         
         let deleteProduct = companySelected.products[index]
         
-        var db: COpaquePointer = nil
-        var error: UnsafeMutablePointer<Int8> = nil
-        if sqlite3_open(fileURL, &db) == SQLITE_OK {
-            let deleteSQL = "DELETE FROM Product WHERE product_id=\(deleteProduct.productID);"
-            //print(deleteSQL)
-            if sqlite3_exec(db, deleteSQL, nil, nil, &error) == SQLITE_OK {
-                //print("Deleted product from table")
-            }
-            else {
-                let errmsg = String.fromCString(sqlite3_errmsg(db))
-                print("error preparing delete: \(errmsg!)")
-            }
-            sqlite3_close(db)
+        let fetchRequest = NSFetchRequest(entityName: "Product")
+        let predicate = NSPredicate(format: "productID == %lu", deleteProduct.productID)
+        fetchRequest.predicate = predicate
+        
+        var results : [AnyObject] = []
+        do {
+            results = try managedContext.executeFetchRequest(fetchRequest)
         }
-        else {
-            print("error opening database")
+        catch {
+            print("Couldn't execute delete product fetch")
         }
+        
+
+        managedContext.deleteObject(results[0] as! NSManagedObject)
+
         
         companySelected.products.removeAtIndex(index)
     }
@@ -256,6 +400,7 @@ class DataStore : NSObject  {
                 }
             }
         }
+        products.removeAll()
     }
     
     
@@ -271,75 +416,76 @@ class DataStore : NSObject  {
     
     
     func addCompany(newCompany : Company) {
-        companies += [newCompany]
-        var db: COpaquePointer = nil
-        var error: UnsafeMutablePointer<Int8> = nil
+        
         companyHighestID += 1
         newCompany.id = companyHighestID
-        if sqlite3_open(fileURL, &db) == SQLITE_OK {
-            let insertSQL = "INSERT INTO Company VALUES(\(newCompany.id),\"\(newCompany.name)\",\"\(newCompany.image)\",\"\(newCompany.stock)\",\"\(newCompany.stockPrice)\",\(newCompany.position));"
-            //print(insertSQL)
-            if sqlite3_exec(db, insertSQL, nil, nil, &error) == SQLITE_OK {
-                //print("Added to Company table")
-            }
-            else {
-                let errmsg = String.fromCString(sqlite3_errmsg(db))
-                print("error preparing select: \(errmsg!)")
-            }
-            sqlite3_close(db)
+        companies += [newCompany]
+        
+        let newEntity = NSEntityDescription.insertNewObjectForEntityForName("Company", inManagedObjectContext: managedContext)
+        newEntity.setValue(newCompany.id, forKey: "id")
+        newEntity.setValue(newCompany.image, forKey: "image")
+        newEntity.setValue(newCompany.name, forKey: "name")
+        newEntity.setValue(newCompany.position, forKey: "position")
+        newEntity.setValue(newCompany.stock, forKey: "stock")
+        
+        do {
+            try managedContext.save()
         }
-        else {
-            print("error opening database")
+        catch {
+            print("Couldn't save new Company")
         }
     }
     
     func updateCompany(updateCompany : Company) {
-        var db: COpaquePointer = nil
-        var error: UnsafeMutablePointer<Int8> = nil
-        if sqlite3_open(fileURL, &db) == SQLITE_OK {
-            let updateSQL = "UPDATE Company SET name=\"\(updateCompany.name)\", image=\"\(updateCompany.image)\", stock=\"\(updateCompany.stock)\", position=\(updateCompany.position) WHERE company_id=\(updateCompany.id);"
-            //print(updateSQL)
-            if sqlite3_exec(db, updateSQL, nil, nil, &error) == SQLITE_OK {
-                //print("Updated company in table")
-            }
-            else {
-                let errmsg = String.fromCString(sqlite3_errmsg(db))
-                print("error preparing update: \(errmsg!)")
-            }
-            sqlite3_close(db)
-        }
-        else {
-            print("error opening database")
-        }
-    }
-    func deleteCompany(deleteCompany : Company, index : Int) {
+        let fetchRequest = NSFetchRequest(entityName: "Company")
+        let predicate = NSPredicate(format: "id == %lu", updateCompany.id)
+        fetchRequest.predicate = predicate
         
-        
-
-        var db: COpaquePointer = nil
-        var error: UnsafeMutablePointer<Int8> = nil
-        if sqlite3_open(fileURL, &db) == SQLITE_OK {
-            let deleteSQL = "DELETE FROM Company WHERE company_id=\(deleteCompany.id);"
-            //print(deleteSQL)
-            if sqlite3_exec(db, deleteSQL, nil, nil, &error) == SQLITE_OK {
-                //print("Deleted company from table")
-            }
-            else {
-                let errmsg = String.fromCString(sqlite3_errmsg(db))
-                print("error preparing delete: \(errmsg!)")
-            }
-            sqlite3_close(db)
+        var results : [AnyObject] = []
+        do {
+            results = try managedContext.executeFetchRequest(fetchRequest)
         }
-        else {
-            print("error opening database")
+        catch {
+            print("Couldn't load Company for update")
         }
         
-        companies.removeAtIndex(index)
+        results[0].setValue(updateCompany.id, forKey: "id")
+        results[0].setValue(updateCompany.image, forKey: "image")
+        results[0].setValue(updateCompany.name, forKey: "name")
+        results[0].setValue(updateCompany.position, forKey: "position")
+        results[0].setValue(updateCompany.stock, forKey: "stock")
+        
+        do {
+            try managedContext.save()
+        }
+        catch {
+            print("Couldn't save updated Company")
+        }
+        
     }
     
-    func getCompanies() -> [Company] {
-        return companies
+    func deleteCompany(index : Int) {
+        
+        let deleteCompany = companies[index]
+        
+        let fetchRequest = NSFetchRequest(entityName: "Company")
+        let predicate = NSPredicate(format: "id == %lu", deleteCompany.id)
+        fetchRequest.predicate = predicate
+        
+        var results : [AnyObject] = []
+        do {
+            results = try managedContext.executeFetchRequest(fetchRequest)
+        }
+        catch {
+            print("Couldn't fetch company to delete")
+        }
+        
+        managedContext.deleteObject(results[0] as! NSManagedObject)
+        companies.removeAtIndex(index)
+        
     }
+    
+
 
 
 }

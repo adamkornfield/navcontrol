@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class Product : NSObject {
     
     var companyID = 0

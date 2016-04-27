@@ -18,7 +18,7 @@ class AddEditProduct : UIViewController, UITextFieldDelegate {
     @IBOutlet var imageNameTextField: UITextField!
     @IBOutlet var webpageURLTextField: UITextField!
     
-    var newProduct : Product = Product()
+    var newProduct : Product?
     var inEditing = 0
     
     override func viewDidLoad() {
@@ -40,9 +40,9 @@ class AddEditProduct : UIViewController, UITextFieldDelegate {
         }
         else {
             self.title = "Edit Product"
-            productNameTextField.text = newProduct.name
-            imageNameTextField.text = newProduct.image
-            webpageURLTextField.text = newProduct.url
+            productNameTextField.text = newProduct!.name
+            imageNameTextField.text = newProduct!.image
+            webpageURLTextField.text = newProduct!.url
         }
     }
     
@@ -69,9 +69,9 @@ class AddEditProduct : UIViewController, UITextFieldDelegate {
                 newProduct = Product(inName: productNameTextField.text!, inURL: webpageURLTextField.text! , inImage: imageNameTextField.text!, inCompanyID: 0, inProductID: 0, inPosition: 0)
             }
             else {
-                newProduct.name = productNameTextField.text!
-                newProduct.image = imageNameTextField.text!
-                newProduct.url = webpageURLTextField.text!
+                newProduct!.name = productNameTextField.text!
+                newProduct!.image = imageNameTextField.text!
+                newProduct!.url = webpageURLTextField.text!
             }
         }
     }

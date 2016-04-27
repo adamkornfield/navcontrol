@@ -10,13 +10,14 @@ import UIKit
 
 class ProductViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    @IBOutlet var undoButton: UIBarButtonItem!
     @IBOutlet var productTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
-    var companySelected  : Company = Company()
+    weak var companySelected  : Company?
     var reusableCell = "productCell"
     var inEdit = 0
     var urlToSend : String = ""
-    var newProduct : Product = Product()
+    weak var newProduct : Product?
     let dataObject : DataStore = DataStore.sharedInstance
     
     
@@ -24,9 +25,15 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         productTableView.dataSource = self
         productTableView.delegate = self
         productTableView.allowsSelectionDuringEditing = true
-        self.title = companySelected.name
+        self.title = companySelected!.name
+        undoButton.enabled = false
     }
     
+    @IBAction func undoButtonPressed(sender: AnyObject) {
+        dataObject.undoProducts()
+        productTableView.reloadData()
+        undoButton.enabled = false
+    }
     
     @IBAction func editButtonPressed(sender: AnyObject) {
         
@@ -44,18 +51,19 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
-        let itemToMove = companySelected.products[sourceIndexPath.row]
-        companySelected.products.removeAtIndex(sourceIndexPath.row)
-        companySelected.products.insert(itemToMove, atIndex: destinationIndexPath.row)
+        let itemToMove = companySelected!.products[sourceIndexPath.row]
+        companySelected!.products.removeAtIndex(sourceIndexPath.row)
+        companySelected!.products.insert(itemToMove, atIndex: destinationIndexPath.row)
         updateRowPositions()
+        undoButton.enabled = true
 
     }
 
     func updateRowPositions() {
         
-        for count in 0 ..< companySelected.products.count {
-            companySelected.products[count].position = count
-            dataObject.updateProduct(companySelected.products[count])
+        for count in 0 ..< companySelected!.products.count {
+            companySelected!.products[count].position = count
+            dataObject.updateProduct(companySelected!.products[count])
         }
     }
     
@@ -64,11 +72,10 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        dataObject.deleteProduct(companySelected, index: indexPath.row)
-        //companySelected.products.removeAtIndex(indexPath.row)
+        dataObject.deleteProduct(companySelected!, index: indexPath.row)
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         updateRowPositions()
+        undoButton.enabled = true
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -77,15 +84,15 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-            return (companySelected.products.count)
+            return (companySelected!.products.count)
    
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = productTableView.dequeueReusableCellWithIdentifier(reusableCell, forIndexPath: indexPath)
         
-        cell.textLabel?.text = companySelected.products[indexPath.row].name
-        cell.imageView?.image = resizeImage(UIImage(named: companySelected.products[indexPath.row].image)!, newWidth: 35.0)
+        cell.textLabel?.text = companySelected!.products[indexPath.row].name
+        cell.imageView?.image = resizeImage(UIImage(named: companySelected!.products[indexPath.row].image)!, newWidth: 35.0)
         cell.showsReorderControl = true
         let pressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ProductViewController.didLongPressGesture(_:)))
         pressGestureRecognizer.minimumPressDuration = 0.5
@@ -100,7 +107,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         if longPressGesture.state == .Began {
             let gestureLocation = longPressGesture.locationInView(productTableView)
             if let indexPath = productTableView.indexPathForRowAtPoint(gestureLocation) {
-                newProduct = companySelected.products[indexPath.row]
+                newProduct = companySelected!.products[indexPath.row]
                 inEdit = 1
                 performSegueWithIdentifier("AddEditProductSegue", sender: self)
             }
@@ -111,11 +118,11 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if tableView.editing == false {
-            urlToSend = companySelected.products[indexPath.row].url
+            urlToSend = companySelected!.products[indexPath.row].url
             performSegueWithIdentifier("webViewSegue", sender: self)
         }
         else {
-            newProduct = companySelected.products[indexPath.row]
+            newProduct = companySelected!.products[indexPath.row]
             performSegueWithIdentifier("AddEditProductSegue", sender: self)
         }
         
@@ -152,22 +159,23 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     @IBAction func unwindProductSave(sender:UIStoryboardSegue) {
         
         let sourceViewController = sender.sourceViewController as! AddEditProduct
-        newProduct = sourceViewController.newProduct
+        newProduct = sourceViewController.newProduct!
         
         if inEdit == 0 {
-            newProduct.companyID = companySelected.id
-            newProduct.position = companySelected.products.count
-            //companySelected.products += [newProduct]
-            dataObject.addProduct(newProduct, companySelected: companySelected)
-            let newIndexPath = NSIndexPath(forItem: companySelected.products.count - 1, inSection: 0)
+            newProduct!.companyID = companySelected!.id
+            newProduct!.position = companySelected!.products.count
+            dataObject.addProduct(newProduct!, companySelected: companySelected!)
+            let newIndexPath = NSIndexPath(forItem: companySelected!.products.count - 1, inSection: 0)
             productTableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+            undoButton.enabled = true
         }
         else {
-            dataObject.updateProduct(newProduct)
+            dataObject.updateProduct(newProduct!)
             inEdit = 0
             productTableView.editing = false
             editButton.title = "Edit"
             productTableView.reloadData()
+            undoButton.enabled = true
         }
     }
 
