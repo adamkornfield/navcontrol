@@ -30,7 +30,7 @@ class Company : NSObject {
         
     }
     
-    convenience override init() {
-        self.init(inName: "", inProducts: [], inImage: "", inStock: "", inID: 0, inPosition: 0)
-    }
+//    convenience override init() {
+//        self.init(inName: "", inProducts: [], inImage: "", inStock: "", inID: 0, inPosition: 0)
+//    }
 }

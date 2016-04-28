@@ -14,19 +14,19 @@
 		57A126D41CCEA4AF00C75D20 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57A126D31CCEA4AF00C75D20 /* CoreData.framework */; };
 		57A126DE1CCEBC5100C75D20 /* CompanyManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A126DD1CCEBC5100C75D20 /* CompanyManagedObject.swift */; };
 		57A126E01CCEBCB000C75D20 /* ProductManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A126DF1CCEBCB000C75D20 /* ProductManagedObject.swift */; };
+		57A127041CD24DF500C75D20 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A127031CD24DF500C75D20 /* Utility.swift */; };
+		57A127061CD2535000C75D20 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A127051CD2535000C75D20 /* Seed.swift */; };
 		57A4E76A1CBC2FE600220204 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7691CBC2FE600220204 /* apple.png */; };
 		57A4E76E1CBC408B00220204 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76D1CBC408B00220204 /* Company.swift */; };
 		57A4E7701CBC40BC00220204 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E76F1CBC40BC00220204 /* Product.swift */; };
-		57A4E7721CBD2D2D00220204 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7711CBD2D2D00220204 /* DataStore.swift */; };
+		57A4E7721CBD2D2D00220204 /* DAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7711CBD2D2D00220204 /* DAO.swift */; };
 		57A4E7741CBD619B00220204 /* AddEditCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7731CBD619B00220204 /* AddEditCompany.swift */; };
 		57A4E77A1CBD858A00220204 /* coffee.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7761CBD858A00220204 /* coffee.png */; };
 		57A4E77B1CBD858A00220204 /* iced.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7771CBD858A00220204 /* iced.png */; };
 		57A4E77D1CBD858A00220204 /* tea.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7791CBD858A00220204 /* tea.png */; };
 		57A4E7811CBD867500220204 /* starbucks.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A4E7801CBD867500220204 /* starbucks.png */; };
 		57A4E7831CBD87E800220204 /* AddEditProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7821CBD87E800220204 /* AddEditProduct.swift */; };
-		57A4E7851CBE943A00220204 /* resizeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7841CBE943A00220204 /* resizeImage.swift */; };
 		57A4E7871CBED79C00220204 /* CompanyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7861CBED79C00220204 /* CompanyTableViewCell.swift */; };
-		57A4E7891CBEE03A00220204 /* getStockPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A4E7881CBEE03A00220204 /* getStockPrice.swift */; };
 		57AFF7561CB8149A00A48158 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 57AFF7551CB8149A00A48158 /* Default-568h@2x.png */; };
 		57F2E20C1CB56CE800B344B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */; };
 		57F2E20E1CB56CE800B344B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2E20D1CB56CE800B344B0 /* ViewController.swift */; };
@@ -62,19 +62,19 @@
 		57A126D31CCEA4AF00C75D20 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		57A126DD1CCEBC5100C75D20 /* CompanyManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyManagedObject.swift; sourceTree = "<group>"; };
 		57A126DF1CCEBCB000C75D20 /* ProductManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductManagedObject.swift; sourceTree = "<group>"; };
+		57A127031CD24DF500C75D20 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		57A127051CD2535000C75D20 /* Seed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
 		57A4E7691CBC2FE600220204 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
 		57A4E76D1CBC408B00220204 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		57A4E76F1CBC40BC00220204 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
-		57A4E7711CBD2D2D00220204 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		57A4E7711CBD2D2D00220204 /* DAO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DAO.swift; sourceTree = "<group>"; };
 		57A4E7731CBD619B00220204 /* AddEditCompany.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEditCompany.swift; sourceTree = "<group>"; };
 		57A4E7761CBD858A00220204 /* coffee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coffee.png; sourceTree = "<group>"; };
 		57A4E7771CBD858A00220204 /* iced.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iced.png; sourceTree = "<group>"; };
 		57A4E7791CBD858A00220204 /* tea.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tea.png; sourceTree = "<group>"; };
 		57A4E7801CBD867500220204 /* starbucks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starbucks.png; sourceTree = "<group>"; };
 		57A4E7821CBD87E800220204 /* AddEditProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEditProduct.swift; sourceTree = "<group>"; };
-		57A4E7841CBE943A00220204 /* resizeImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = resizeImage.swift; sourceTree = "<group>"; };
 		57A4E7861CBED79C00220204 /* CompanyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyTableViewCell.swift; sourceTree = "<group>"; };
-		57A4E7881CBEE03A00220204 /* getStockPrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = getStockPrice.swift; sourceTree = "<group>"; };
 		57AFF7551CB8149A00A48158 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		57F2E2081CB56CE800B344B0 /* navcontrol.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = navcontrol.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -152,15 +152,15 @@
 				57A126DD1CCEBC5100C75D20 /* CompanyManagedObject.swift */,
 				57A4E76F1CBC40BC00220204 /* Product.swift */,
 				57A126DF1CCEBCB000C75D20 /* ProductManagedObject.swift */,
-				57A4E7711CBD2D2D00220204 /* DataStore.swift */,
+				57A4E7711CBD2D2D00220204 /* DAO.swift */,
+				57A127051CD2535000C75D20 /* Seed.swift */,
 				57F2E20B1CB56CE800B344B0 /* AppDelegate.swift */,
 				57F2E20D1CB56CE800B344B0 /* ViewController.swift */,
 				57A4E7731CBD619B00220204 /* AddEditCompany.swift */,
+				57A127031CD24DF500C75D20 /* Utility.swift */,
 				57F2E2211CB5ADCC00B344B0 /* ProductViewController.swift */,
 				57A4E7821CBD87E800220204 /* AddEditProduct.swift */,
 				57A126D01CCEA0BC00C75D20 /* coredata.xcdatamodeld */,
-				57A4E7881CBEE03A00220204 /* getStockPrice.swift */,
-				57A4E7841CBE943A00220204 /* resizeImage.swift */,
 				57F2E2541CB6F1E300B344B0 /* WebViewController.swift */,
 				57F2E20F1CB56CE800B344B0 /* Main.storyboard */,
 				57A4E7861CBED79C00220204 /* CompanyTableViewCell.swift */,
@@ -328,20 +328,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57A4E7721CBD2D2D00220204 /* DataStore.swift in Sources */,
+				57A4E7721CBD2D2D00220204 /* DAO.swift in Sources */,
 				57F2E20E1CB56CE800B344B0 /* ViewController.swift in Sources */,
 				57A126E01CCEBCB000C75D20 /* ProductManagedObject.swift in Sources */,
 				57F2E20C1CB56CE800B344B0 /* AppDelegate.swift in Sources */,
 				57A4E7741CBD619B00220204 /* AddEditCompany.swift in Sources */,
 				57A4E7871CBED79C00220204 /* CompanyTableViewCell.swift in Sources */,
-				57A4E7891CBEE03A00220204 /* getStockPrice.swift in Sources */,
 				57A4E7701CBC40BC00220204 /* Product.swift in Sources */,
 				57F2E2221CB5ADCC00B344B0 /* ProductViewController.swift in Sources */,
+				57A127061CD2535000C75D20 /* Seed.swift in Sources */,
 				57A4E7831CBD87E800220204 /* AddEditProduct.swift in Sources */,
 				57F2E2551CB6F1E300B344B0 /* WebViewController.swift in Sources */,
 				57A126DE1CCEBC5100C75D20 /* CompanyManagedObject.swift in Sources */,
+				57A127041CD24DF500C75D20 /* Utility.swift in Sources */,
 				57A4E76E1CBC408B00220204 /* Company.swift in Sources */,
-				57A4E7851CBE943A00220204 /* resizeImage.swift in Sources */,
 				57A126D21CCEA0BC00C75D20 /* coredata.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

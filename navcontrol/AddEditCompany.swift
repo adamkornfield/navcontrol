@@ -10,13 +10,12 @@ import UIKit
 
 class AddEditCompany : UIViewController, UITextFieldDelegate {
     
-    var company : Company = Company()
+    var company : Company!
     var editExisting = 0
     
     @IBOutlet var coNameTextField: UITextField!
     @IBOutlet var logoTextfield: UITextField!
     @IBOutlet var stockSymbolTextField: UITextField!
-    
     @IBOutlet var cancelButton: UIBarButtonItem!
     @IBOutlet var saveButton: UIBarButtonItem!
     
@@ -25,7 +24,6 @@ class AddEditCompany : UIViewController, UITextFieldDelegate {
         coNameTextField.delegate = self
         logoTextfield.delegate = self
         stockSymbolTextField.delegate = self
-        
         
         if editExisting == 0 {
             self.title = "Add Company"
@@ -53,7 +51,6 @@ class AddEditCompany : UIViewController, UITextFieldDelegate {
         return true
     }
 
-    
     @IBAction func removeKeyboards(sender: AnyObject) {
         coNameTextField.resignFirstResponder()
         logoTextfield.resignFirstResponder()
@@ -64,16 +61,14 @@ class AddEditCompany : UIViewController, UITextFieldDelegate {
         if sender as! UIBarButtonItem == saveButton {
             
             if editExisting == 0 {
-                company = Company(inName: coNameTextField.text!, inProducts: [], inImage: logoTextfield.text!, inStock: stockSymbolTextField.text!, inID: 0, inPosition: 0)
+                company = Company(inName: coNameTextField.text!, inProducts: [], inImage: logoTextfield.text!, inStock: stockSymbolTextField.text!.stringByReplacingOccurrencesOfString(" ", withString: ""), inID: 0, inPosition: 0)
             }
             else {
                 company.name = coNameTextField.text!
                 company.image = logoTextfield.text!
-                company.stock = stockSymbolTextField.text!
+                company.stock = stockSymbolTextField.text!.stringByReplacingOccurrencesOfString(" ", withString: "")
             }
-            
         }
     }
-    
 
 }

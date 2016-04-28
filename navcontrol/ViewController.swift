@@ -10,7 +10,6 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    @IBOutlet var undoButton: UIBarButtonItem!
     @IBOutlet var companyTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
     @IBOutlet var toolbar: UIToolbar!
@@ -22,11 +21,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     weak var newCompany : Company?
     var inEdit = 0
     var longPressGesture : UILongPressGestureRecognizer = UILongPressGestureRecognizer()
-    let dataObject : DataStore = DataStore.sharedInstance
+    let dataObject : DAO = DAO.sharedInstance
+    var undoButton : UIBarButtonItem!
+    var undoButtonShown : Bool = false
+    var wentToProductViewController : Bool = false
+    
     
     override func viewWillAppear(animated: Bool) {
         if dataObject.companies.count > 0 {
-            getStockPrice(dataObject.companies, companyTableView: companyTableView)
+            Utility.getStockPrice(dataObject.companies, companyTableView: companyTableView)
+        }
+        
+        if wentToProductViewController == true {
+            wentToProductViewController = false
+            dataObject.clearUndos()
+            checkUndoButtonIsShown()
+            undoButtonShown = false
         }
     }
     
@@ -36,20 +46,30 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         companyTableView.delegate = self
         self.navigationController?.toolbarHidden = false
         companyTableView.allowsSelectionDuringEditing = true
-        undoButton.enabled = false
-        
-        //dataObject.companies = dataObject.companies
-     
-        
+        undoButton = UIBarButtonItem(title: "Undo", style: .Plain, target: self, action: #selector(undoButtonPressed))
     }
     
-    @IBAction func undoButtonPressed(sender: AnyObject) {
+    func undoButtonPressed() {
         dataObject.undoCompaniesAndProducts()
-        getStockPrice(dataObject.companies, companyTableView: companyTableView)
+        Utility.getStockPrice(dataObject.companies, companyTableView: companyTableView)
         companyTableView.reloadData()
-        undoButton.enabled = false
+        checkUndoButtonIsShown()
     }
-    
+
+    func checkUndoButtonIsShown() {
+        if dataObject.canUndo() == true  {
+            if undoButtonShown == false {
+                navigationItem.rightBarButtonItems?.insert(undoButton, atIndex: 1)
+                undoButtonShown = true
+            }
+        }
+        else {
+            if undoButtonShown == true {
+                navigationItem.rightBarButtonItems?.removeAtIndex(1)
+                undoButtonShown = false
+            }
+        }
+    }
     
     @IBAction func editButtonPressed(sender: AnyObject) {
         if companyTableView.editing == false {
@@ -57,23 +77,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             editButton.title = "Done"
             inEdit = 1
             companyTableView.reloadData()
-//            let range = NSMakeRange(0, self.companyTableView.numberOfSections)
-//            let sections = NSIndexSet(indexesInRange: range)
-//            self.companyTableView.reloadSections(sections, withRowAnimation: .None)
-            
+            if undoButtonShown == true {
+                navigationItem.rightBarButtonItems?.removeAtIndex(1)
+            }
         }
         else {
             companyTableView.setEditing(false, animated: true)
             editButton.title = "Edit"
             inEdit = 0
             companyTableView.reloadData()
-//            let range = NSMakeRange(0, self.companyTableView.numberOfSections)
-//            let sections = NSIndexSet(indexesInRange: range)
-//            self.companyTableView.reloadSections(sections, withRowAnimation: .Fade)
-            
-            
-
-            
+            if undoButtonShown == true {
+                navigationItem.rightBarButtonItems?.insert(undoButton, atIndex: 1)
+            }
         }
     }
     
@@ -81,8 +96,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let itemToMove = dataObject.companies[sourceIndexPath.row]
         dataObject.companies.removeAtIndex(sourceIndexPath.row)
         dataObject.companies.insert(itemToMove, atIndex: destinationIndexPath.row)
+        //checkUndoButtonIsShown()
+        undoButtonShown = true
         updateRowPositions()
-        undoButton.enabled = true
     }
     
     func updateRowPositions() {
@@ -97,9 +113,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             dataObject.deleteCompany(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             updateRowPositions()
-            undoButton.enabled = true
+            if companyTableView.editing == false {
+                checkUndoButtonIsShown()
+            }
+            else {
+                undoButtonShown = true
+            }
         }
-        
     }
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -116,13 +136,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(textCellIdentifier, forIndexPath: indexPath) as! CompanyTableViewCell
-        //cell.textLabel?.text = dataObject.companies[indexPath.row].name
-        //cell.imageView?.image = resizeImage(UIImage(named: dataObject.companies[indexPath.row].image)!, newWidth: 100.0)
         cell.showsReorderControl = false
-        
         cell.companyNameLabel.text = dataObject.companies[indexPath.row].name
-        cell.logoImageView.image = resizeImage(UIImage(named: dataObject.companies[indexPath.row].image)!, newWidth: 100.0)
-        
+        cell.logoImageView.image = Utility.resizeImage(UIImage(named: dataObject.companies[indexPath.row].image)!, newWidth: 100.0)
         if dataObject.companies[indexPath.row].stockPrice == "" {
             cell.stockSymbolLabel.text = "Private"
             cell.stockPriceLabel.text = ""
@@ -131,8 +147,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             cell.stockSymbolLabel.text = dataObject.companies[indexPath.row].stock
             cell.stockPriceLabel.text = String(dataObject.companies[indexPath.row].stockPrice)
         }
-        
-        
         if companyTableView.editing == true {
             cell.leadingImageViewConstraint.constant = 40.0
         }
@@ -150,16 +164,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
-    
-//    func tableView(tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-//        return true
-//    }
-    
-//    func tableView(tableView: UITableView, indentationLevelForRowAtIndexPath indexPath: NSIndexPath) -> Int {
-//        return 1
-//    }
-
-   
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -189,6 +193,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if segue.identifier == "productViewControllerSegue" {
             let destViewController = segue.destinationViewController as! ProductViewController
             destViewController.companySelected = companySelected!
+            wentToProductViewController = true
+            dataObject.clearUndos()
         }
         else if segue.identifier == "addEditCompanySegue" {
             let destViewController = segue.destinationViewController as! UINavigationController
@@ -207,32 +213,26 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
-    
     @IBAction func unwindSave(sender: UIStoryboardSegue) {
         
         let sourceViewController = sender.sourceViewController as! AddEditCompany
         newCompany = sourceViewController.company
-        
         if inEdit == 0 {
             newCompany!.position = dataObject.companies.count
             dataObject.addCompany(newCompany!)
-            getStockPrice(dataObject.companies, companyTableView: companyTableView)
+            Utility.getStockPrice(dataObject.companies, companyTableView: companyTableView)
             let newPath = NSIndexPath(forItem: dataObject.companies.count - 1, inSection: 0)
             companyTableView.insertRowsAtIndexPaths([newPath], withRowAnimation: .Bottom)
-            undoButton.enabled = true
         }
         else {
             dataObject.updateCompany(newCompany!)
-            getStockPrice(dataObject.companies, companyTableView: companyTableView)
+            Utility.getStockPrice(dataObject.companies, companyTableView: companyTableView)
             companyTableView.editing = false
             editButton.title = "Edit"
             inEdit = 0
             companyTableView.reloadData()
-            undoButton.enabled = true
         }
-
     }
     
-
 }
 

@@ -10,7 +10,6 @@ import UIKit
 
 class ProductViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    @IBOutlet var undoButton: UIBarButtonItem!
     @IBOutlet var productTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
     weak var companySelected  : Company?
@@ -18,34 +17,58 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     var inEdit = 0
     var urlToSend : String = ""
     weak var newProduct : Product?
-    let dataObject : DataStore = DataStore.sharedInstance
+    let dataObject : DAO = DAO.sharedInstance
+    var undoButton : UIBarButtonItem!
+    var undoButtonShown : Bool = false
     
+
     
     override func viewDidLoad() {
         productTableView.dataSource = self
         productTableView.delegate = self
         productTableView.allowsSelectionDuringEditing = true
         self.title = companySelected!.name
-        undoButton.enabled = false
+        undoButton = UIBarButtonItem(title: "Undo", style: .Plain, target: self, action: #selector(undoButtonPressed))
     }
     
-    @IBAction func undoButtonPressed(sender: AnyObject) {
+    func undoButtonPressed() {
         dataObject.undoProducts()
         productTableView.reloadData()
-        undoButton.enabled = false
+        checkUndoButtonIsShown()
+    }
+    
+    func checkUndoButtonIsShown() {
+        if dataObject.canUndo() == true  {
+            if undoButtonShown == false {
+                navigationItem.rightBarButtonItems?.insert(undoButton, atIndex: 1)
+                undoButtonShown = true
+            }
+        }
+        else {
+            if undoButtonShown == true {
+                navigationItem.rightBarButtonItems?.removeAtIndex(1)
+                undoButtonShown = false
+            }
+        }
     }
     
     @IBAction func editButtonPressed(sender: AnyObject) {
-        
         if productTableView.editing == false {
             productTableView.setEditing(true, animated: true)
             self.navigationItem.rightBarButtonItem?.title = "Done"
             inEdit = 1
+            if undoButtonShown == true {
+                navigationItem.rightBarButtonItems?.removeAtIndex(1)
+            }
+
         }
         else {
             productTableView.setEditing(false, animated: true)
             self.navigationItem.rightBarButtonItem?.title = "Edit"
             inEdit = 0
+            if undoButtonShown == true {
+                navigationItem.rightBarButtonItems?.insert(undoButton, atIndex: 1)
+            }
         }
     }
     
@@ -54,13 +77,12 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         let itemToMove = companySelected!.products[sourceIndexPath.row]
         companySelected!.products.removeAtIndex(sourceIndexPath.row)
         companySelected!.products.insert(itemToMove, atIndex: destinationIndexPath.row)
+        //checkUndoButtonIsShown()
+        undoButtonShown = true
         updateRowPositions()
-        undoButton.enabled = true
-
     }
 
     func updateRowPositions() {
-        
         for count in 0 ..< companySelected!.products.count {
             companySelected!.products[count].position = count
             dataObject.updateProduct(companySelected!.products[count])
@@ -75,7 +97,13 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         dataObject.deleteProduct(companySelected!, index: indexPath.row)
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         updateRowPositions()
-        undoButton.enabled = true
+        if productTableView.editing == false {
+            checkUndoButtonIsShown()
+        }
+        else {
+            undoButtonShown = true
+        }
+        
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -85,14 +113,12 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
             return (companySelected!.products.count)
-   
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = productTableView.dequeueReusableCellWithIdentifier(reusableCell, forIndexPath: indexPath)
-        
         cell.textLabel?.text = companySelected!.products[indexPath.row].name
-        cell.imageView?.image = resizeImage(UIImage(named: companySelected!.products[indexPath.row].image)!, newWidth: 35.0)
+        cell.imageView?.image = Utility.resizeImage(UIImage(named: companySelected!.products[indexPath.row].image)!, newWidth: 35.0)
         cell.showsReorderControl = true
         let pressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ProductViewController.didLongPressGesture(_:)))
         pressGestureRecognizer.minimumPressDuration = 0.5
@@ -100,7 +126,6 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
         
         return cell
     }
-    
     
     func didLongPressGesture(longPressGesture : UILongPressGestureRecognizer) {
         
@@ -112,7 +137,6 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
                 performSegueWithIdentifier("AddEditProductSegue", sender: self)
             }
         }
-        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -125,8 +149,6 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
             newProduct = companySelected!.products[indexPath.row]
             performSegueWithIdentifier("AddEditProductSegue", sender: self)
         }
-        
-        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -144,9 +166,6 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
                 productTableView.editing = false
             }
         }
-
-
-        
     }
     
     @IBAction func unwindProductCancel(sender:UIStoryboardSegue) {
@@ -154,7 +173,6 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
             inEdit = 0
         }
     }
-    
     
     @IBAction func unwindProductSave(sender:UIStoryboardSegue) {
         
@@ -167,7 +185,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
             dataObject.addProduct(newProduct!, companySelected: companySelected!)
             let newIndexPath = NSIndexPath(forItem: companySelected!.products.count - 1, inSection: 0)
             productTableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
-            undoButton.enabled = true
+            checkUndoButtonIsShown()
         }
         else {
             dataObject.updateProduct(newProduct!)
@@ -175,12 +193,7 @@ class ProductViewController : UIViewController, UITableViewDataSource, UITableVi
             productTableView.editing = false
             editButton.title = "Edit"
             productTableView.reloadData()
-            undoButton.enabled = true
+            checkUndoButtonIsShown()
         }
     }
-
-    
-    
-
-    
 }

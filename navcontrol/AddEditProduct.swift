@@ -30,7 +30,6 @@ class AddEditProduct : UIViewController, UITextFieldDelegate {
             saveButton.enabled = false
         }
         
-        
         productNameTextField.delegate = self
         imageNameTextField.delegate = self
         webpageURLTextField.delegate = self
@@ -46,8 +45,6 @@ class AddEditProduct : UIViewController, UITextFieldDelegate {
         }
     }
     
-
-    
     func textFieldDidEndEditing(textField: UITextField) {
         if (productNameTextField.text! != "" && imageNameTextField.text! != "" && webpageURLTextField.text! != "") {
             saveButton.enabled = true
@@ -60,8 +57,6 @@ class AddEditProduct : UIViewController, UITextFieldDelegate {
         }
         return true
     }
-    
-    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if sender as! UIBarButtonItem == saveButton {

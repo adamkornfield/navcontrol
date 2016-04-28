@@ -27,10 +27,4 @@ class Product : NSObject {
         position = inPosition
         
     }
-    
-    convenience override init() {
-        self.init(inName: "", inURL: "", inImage: "", inCompanyID: 0, inProductID: 0, inPosition: 0)
-    }
-    
-
 }
