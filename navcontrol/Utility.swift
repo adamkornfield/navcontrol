@@ -23,7 +23,7 @@ class Utility : NSObject {
     }
     
     
-    class func getStockPrice(companies : [Company], companyTableView : UITableView) {
+    class func getStockPrice(companies : [Company], companyCollectionView : UICollectionView) {
         
         var allCompanyStocks = ""
         var count = 0
@@ -64,7 +64,16 @@ class Utility : NSObject {
                                 companies[positionsWithStocks[count]].stockPrice = String(format: "%.2f", Double(priceArray[count])!)
                             }
                         }
-                        companyTableView.reloadData()
+                        
+                        companyCollectionView.performBatchUpdates(
+                            {() in
+                                
+                                let sectionIndex = NSIndexSet(index: 0)
+                                companyCollectionView.reloadSections(sectionIndex)
+                            }, completion: nil)
+
+                        
+                        //companyCollectionView.reloadData()
                     }
                     dispatch_async(dispatch_get_main_queue(), updatePrices)
                 }

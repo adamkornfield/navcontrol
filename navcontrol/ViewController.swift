@@ -8,87 +8,217 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
+    @IBOutlet var companyCollectionView: UICollectionView!
     @IBOutlet var companyTableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
     @IBOutlet var toolbar: UIToolbar!
     @IBOutlet var logoImageView: UIImageView!
 
-    let textCellIdentifier = "reuseCell"
+    let textCellIdentifier = "companyCell"
     weak var companySelected : Company?
     
     weak var newCompany : Company?
     var inEdit = 0
-    var longPressGesture : UILongPressGestureRecognizer = UILongPressGestureRecognizer()
+    var longPressGestureRecognizerArray : [UILongPressGestureRecognizer] = []
     let dataObject : DAO = DAO.sharedInstance
     var undoButton : UIBarButtonItem!
     var undoButtonShown : Bool = false
     var wentToProductViewController : Bool = false
+    var editMode : Bool = false
+    var insets = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
     
     
     override func viewWillAppear(animated: Bool) {
         if dataObject.companies.count > 0 {
-            Utility.getStockPrice(dataObject.companies, companyTableView: companyTableView)
+            Utility.getStockPrice(dataObject.companies, companyCollectionView: companyCollectionView)
         }
         
         if wentToProductViewController == true {
             wentToProductViewController = false
             dataObject.clearUndos()
             checkUndoButtonIsShown()
-            undoButtonShown = false
         }
+        
+        if editMode == true {
+            editButton.title = "Done"
+        }
+        else {
+            editButton.title = "Edit"
+        }
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        companyTableView.dataSource = self
-        companyTableView.delegate = self
+        //companyTableView.dataSource = self
+        //companyTableView.delegate = self
         self.navigationController?.toolbarHidden = false
-        companyTableView.allowsSelectionDuringEditing = true
+        //companyTableView.allowsSelectionDuringEditing = true
         undoButton = UIBarButtonItem(title: "Undo", style: .Plain, target: self, action: #selector(undoButtonPressed))
+        self.automaticallyAdjustsScrollViewInsets = false
+        companyCollectionView.dataSource = self
+        companyCollectionView.delegate = self
     }
     
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataObject.companies.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = companyCollectionView.dequeueReusableCellWithReuseIdentifier(textCellIdentifier, forIndexPath: indexPath) as! CompanyCollectionCell
+        cell.companyName.text = dataObject.companies[indexPath.row].name
+        cell.companyImage.image = Utility.resizeImage(UIImage(named: dataObject.companies[indexPath.row].image)!, newWidth: 100.0)
+        cell.companyStockSymbolLabel.text = dataObject.companies[indexPath.row].stock
+        cell.companyStockPriceLabel.text = dataObject.companies[indexPath.row].stockPrice
+        
+        longPressGestureRecognizerArray.append(UILongPressGestureRecognizer(target: self, action: #selector(ViewController.showEditDeleteActionSheet)))
+        longPressGestureRecognizerArray[indexPath.row].minimumPressDuration = 0.5
+        cell.addGestureRecognizer(longPressGestureRecognizerArray[indexPath.row])
+        cell.layer.cornerRadius = 5.0
+        
+        return cell
+    }
+    
+    func showEditDeleteActionSheet(longPressGesture : UILongPressGestureRecognizer) {
+        
+        //for longPressGesture in longPressGestureRecognizerArray {
+        
+        if editMode == false {
+            if longPressGesture.state == .Began {
+                let gestureLocation = longPressGesture.locationInView(companyCollectionView)
+                if let indexPath = companyCollectionView.indexPathForItemAtPoint(gestureLocation) {
+                    let alertController = UIAlertController(title: nil , message: nil, preferredStyle: .ActionSheet)
+                    let editAction = UIAlertAction(title: "Edit Company", style: .Default, handler: { (action: UIAlertAction!) in
+                        self.companySelected = self.dataObject.companies[indexPath.row]
+                        self.inEdit = 1
+                        self.performSegueWithIdentifier("addEditCompanySegue", sender: self)
+                    })
+                    let deleteAction = UIAlertAction(title: "Delete", style: .Destructive, handler: {(action: UIAlertAction!) in
+                        self.dataObject.deleteCompany(indexPath.row)
+                        self.companyCollectionView.deleteItemsAtIndexPaths([indexPath])
+                        self.checkUndoButtonIsShown()
+                    })
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                    
+                    alertController.addAction(editAction)
+                    alertController.addAction(deleteAction)
+                    alertController.addAction(cancelAction)
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                }
+            }
+        }
+        else {
+            let gestureLocation = longPressGesture.locationInView(companyCollectionView)
+            let indexPath = companyCollectionView.indexPathForItemAtPoint(gestureLocation)
+            
+            switch(longPressGesture.state) {
+                
+            case UIGestureRecognizerState.Began:
+                UIView.animateWithDuration(0.1, animations: {() in
+                    self.companyCollectionView.cellForItemAtIndexPath(indexPath!)?.transform = CGAffineTransformScale((self.companyCollectionView.cellForItemAtIndexPath(indexPath!)?.transform)!, 1.1, 1.1)
+                })
+                companyCollectionView.beginInteractiveMovementForItemAtIndexPath(indexPath!)
+                
+            case UIGestureRecognizerState.Changed:
+                companyCollectionView.updateInteractiveMovementTargetPosition(longPressGesture.locationInView(self.view))
+                
+            case UIGestureRecognizerState.Ended:
+                if let _ = indexPath {
+                    UIView.animateWithDuration(0.1, animations: {() in
+                        self.companyCollectionView.cellForItemAtIndexPath(indexPath!)!.transform = CGAffineTransformIdentity
+                    })
+                }
+                companyCollectionView.endInteractiveMovement()
+                
+            default:
+                companyCollectionView.cancelInteractiveMovement()
+            }
+        }
+        //}
+    }
+    
+    func collectionView(collectionView: UICollectionView, moveItemAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        let itemToMove = dataObject.companies[sourceIndexPath.row]
+        dataObject.companies.removeAtIndex(sourceIndexPath.row)
+        dataObject.companies.insert(itemToMove, atIndex: destinationIndexPath.row)
+        //undoButtonShown = true
+        updateRowPositions()
+        checkUndoButtonIsShown()
+
+        
+    }
+    
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSize(width: 150.0, height: 200.0)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return insets
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        companySelected = dataObject.companies[indexPath.row]
+        editMode = false
+        performSegueWithIdentifier("productViewControllerSegue", sender:indexPath)
+    }
+    
+    
     func undoButtonPressed() {
-        dataObject.undoCompaniesAndProducts()
-        Utility.getStockPrice(dataObject.companies, companyTableView: companyTableView)
-        companyTableView.reloadData()
+        
+        self.dataObject.undoCompaniesAndProducts()
+        Utility.getStockPrice(self.dataObject.companies, companyCollectionView: self.companyCollectionView)
+
+        companyCollectionView.performBatchUpdates(
+            {() in
+            let sectionIndex = NSIndexSet(index: 0)
+            self.companyCollectionView.reloadSections(sectionIndex)
+            }, completion: nil)
+        
+        //companyCollectionView.reloadData()
+        
         checkUndoButtonIsShown()
     }
 
     func checkUndoButtonIsShown() {
         if dataObject.canUndo() == true  {
-            if undoButtonShown == false {
-                navigationItem.rightBarButtonItems?.insert(undoButton, atIndex: 1)
-                undoButtonShown = true
-            }
+            navigationItem.rightBarButtonItem = undoButton
         }
         else {
-            if undoButtonShown == true {
-                navigationItem.rightBarButtonItems?.removeAtIndex(1)
-                undoButtonShown = false
-            }
+            navigationItem.rightBarButtonItem = nil
         }
     }
     
     @IBAction func editButtonPressed(sender: AnyObject) {
-        if companyTableView.editing == false {
-            companyTableView.setEditing(true, animated: true)
+        if editMode == false {
+            editMode = true
             editButton.title = "Done"
-            inEdit = 1
-            companyTableView.reloadData()
-            if undoButtonShown == true {
-                navigationItem.rightBarButtonItems?.removeAtIndex(1)
-            }
+
+//            companyTableView.setEditing(true, animated: true)
+//            editButton.title = "Done"
+//            inEdit = 1
+//            companyTableView.reloadData()
+//            if undoButtonShown == true {
+//                navigationItem.rightBarButtonItems?.removeAtIndex(1)
+//            }
         }
         else {
-            companyTableView.setEditing(false, animated: true)
+            editMode = false
             editButton.title = "Edit"
-            inEdit = 0
-            companyTableView.reloadData()
-            if undoButtonShown == true {
-                navigationItem.rightBarButtonItems?.insert(undoButton, atIndex: 1)
-            }
+//            companyTableView.setEditing(false, animated: true)
+//            editButton.title = "Edit"
+//            inEdit = 0
+//            companyTableView.reloadData()
+//            if undoButtonShown == true {
+//                navigationItem.rightBarButtonItems?.insert(undoButton, atIndex: 1)
+//            }
         }
     }
     
@@ -96,7 +226,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let itemToMove = dataObject.companies[sourceIndexPath.row]
         dataObject.companies.removeAtIndex(sourceIndexPath.row)
         dataObject.companies.insert(itemToMove, atIndex: destinationIndexPath.row)
-        //checkUndoButtonIsShown()
         undoButtonShown = true
         updateRowPositions()
     }
@@ -153,10 +282,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         else  {
             cell.leadingImageViewConstraint.constant = 0.0
         }
-        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.didLongPressGesture) )
-        longPressGesture.minimumPressDuration = 0.5
-        cell.showsReorderControl = true
-        cell.addGestureRecognizer(longPressGesture)
+//        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.didLongPressGesture) )
+//        longPressGesture.minimumPressDuration = 0.5
+//        cell.showsReorderControl = true
+//        cell.addGestureRecognizer(longPressGesture)
         
         return cell
     }
@@ -220,17 +349,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if inEdit == 0 {
             newCompany!.position = dataObject.companies.count
             dataObject.addCompany(newCompany!)
-            Utility.getStockPrice(dataObject.companies, companyTableView: companyTableView)
+            Utility.getStockPrice(dataObject.companies, companyCollectionView: companyCollectionView)
             let newPath = NSIndexPath(forItem: dataObject.companies.count - 1, inSection: 0)
-            companyTableView.insertRowsAtIndexPaths([newPath], withRowAnimation: .Bottom)
+            companyCollectionView.insertItemsAtIndexPaths([newPath])
+            checkUndoButtonIsShown()
         }
         else {
             dataObject.updateCompany(newCompany!)
-            Utility.getStockPrice(dataObject.companies, companyTableView: companyTableView)
-            companyTableView.editing = false
-            editButton.title = "Edit"
+            Utility.getStockPrice(dataObject.companies, companyCollectionView: companyCollectionView)
+            //companyTableView.editing = false
+            //editButton.title = "Edit"
             inEdit = 0
-            companyTableView.reloadData()
+            companyCollectionView.reloadData()
+            checkUndoButtonIsShown()
         }
     }
     
